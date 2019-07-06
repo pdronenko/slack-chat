@@ -5,7 +5,7 @@ export default class MessageForm extends React.Component {
     return (
       <div className="input-group mb-3">
         <div className="input-group-prepend">
-          <button className="btn btn-outline-secondary" type="button" id="button-addon1">SEND</button>
+          <button className="btn btn-outline-primary" type="button" id="button-addon1">SEND</button>
         </div>
         <input
           type="text"
