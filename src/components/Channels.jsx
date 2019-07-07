@@ -12,9 +12,9 @@ const actionCreators = {
 class Channels extends React.Component {
   handleChangeChannel = (e) => {
     e.preventDefault();
-    const id = e.target.dataset.channelId;
+    const id = Number(e.target.dataset.channelId);
     const { changeChannel } = this.props;
-    changeChannel(Number(id));
+    changeChannel({ id });
   }
 
   renderChannels() {
@@ -42,9 +42,7 @@ class Channels extends React.Component {
 
   render() {
     return (
-      <div className="col-2">
-        <div id="channels" className="list-group">{this.renderChannels()}</div>
-      </div>
+      <div id="channels" className="list-group">{this.renderChannels()}</div>
     );
   }
 }

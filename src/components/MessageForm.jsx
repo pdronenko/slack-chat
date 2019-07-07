@@ -1,11 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
-import { uniqueId } from 'lodash';
 import * as actions from '../actions';
 
 const mapStateToProps = (state) => {
-  const { channels: { currentChannelId }, username } = state;
+  const {
+    channels: { currentChannelId },
+    userData: { username },
+  } = state;
   return { currentChannelId, username };
 };
 
@@ -16,8 +18,12 @@ const actionCreators = {
 class MessageForm extends React.Component {
   handleSubmit = (values) => {
     const { addMessage, reset, currentChannelId, username } = this.props;
-    const message = { chId:currentChannelId, msgId: uniqueId('msg_'), username };
-    addMessage(message);
+    const message = {
+      ...values,
+      channelId: currentChannelId,
+      username,
+    };
+    addMessage({ message });
     reset();
   }
 
@@ -30,7 +36,7 @@ class MessageForm extends React.Component {
             <input className="btn btn-outline-primary" type="submit" value="SEND" />
           </div>
           <Field
-            name="message"
+            name="text"
             required
             component="input"
             type="text"

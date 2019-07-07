@@ -1,11 +1,33 @@
 import React from 'react';
+import { uniqueId } from 'lodash';
+import { connect } from 'react-redux';
+import * as actions from '../actions';
 
-export default class Messages extends React.Component {
+const mapStateToProps = ({ channels: { currentChannelId }, messages }) => {
+  return { messages: messages[currentChannelId] };
+};
+
+class Messages extends React.Component {
+  renderMessages() {
+    const { messages } = this.props;
+    if (!messages) {
+      return 'no messages';
+    }
+    return messages.map(({ text, channelId, username }) => {
+      return (
+        <div key={uniqueId()} className="text-wrap">
+          <strong>{username}:</strong> {text}
+        </div>
+      );
+    });
+  }
   render() {
     return (
-      <div id="messages-container" className="col-8" style={{ height: '100vh' }}>
-        <div id="messages" className="h-75 border border-light rounded">
-          
+      <div id="messages-container" className="col-8">
+        <div id="messages" className="d-flex align-items-start flex-column-reverse border overflow-auto" style={{ height: '70vh' }}>
+          <div className="mb-auto">
+            {this.renderMessages()}
+          </div>
         </div>
         <div id="message-form">
           {this.props.children}
@@ -14,3 +36,5 @@ export default class Messages extends React.Component {
     );
   }
 }
+
+export default connect(mapStateToProps)(Messages);

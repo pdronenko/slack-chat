@@ -21,10 +21,10 @@ const initState = {
     allIds: gon.channels.map(ch => ch.id),
     currentChannelId: gon.currentChannelId,
   },
-  messages: {
-    byChannelId: {},
+  messages: {},
+  userData: {
+    username: faker.name.findName(),
   },
-  username: faker.name.findName(),
 };
 
 const store = createStore(

@@ -3,19 +3,8 @@ import { createAction } from 'redux-actions';
 
 import routes from '../../server/routes';
 
-export const addMessage = (message) => ({
-  type: 'MESSAGE_ADD',
-  payload: {
-    message
-  },
-});
-
-export const changeChannel = id => ({
-  type: 'CHANNEL_CHANGE',
-  payload: {
-    id,
-  },
-});
+export const addMessage = createAction('MESSAGE_ADD');
+export const changeChannel = createAction('CHANNEL_CHANGE');
 
 // export const fetchMessagesRequest = createAction('MESSAGES_FETCH_REQUEST');
 // export const fetchMessagesSuccess = createAction('MESSAGES_FETCH_SUCCESS');
