@@ -6,7 +6,7 @@ import MessageForm from './MessageForm';
 
 const Chat = () => (
   <div className="row justify-content-start">
-    <div className="col-2">
+    <div id="sidebar" className="col-2">
       <UserProfile />
       <Channels />
     </div>

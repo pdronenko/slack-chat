@@ -21,6 +21,7 @@ class Messages extends React.Component {
       );
     });
   }
+
   render() {
     return (
       <div id="messages-container" className="col-8">

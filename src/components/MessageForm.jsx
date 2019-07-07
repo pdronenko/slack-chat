@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import * as actions from '../actions';
+import routes from '../../server/routes';
 
 const mapStateToProps = (state) => {
   const {
@@ -23,6 +24,7 @@ class MessageForm extends React.Component {
       channelId: currentChannelId,
       username,
     };
+    console.log(routes())
     addMessage({ message });
     reset();
   }

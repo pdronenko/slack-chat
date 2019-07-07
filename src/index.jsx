@@ -6,7 +6,8 @@ import cookies from 'js-cookie';
 import io from 'socket.io-client';
 import React from 'react';
 import { render } from 'react-dom';
-import { createStore } from 'redux';
+import thunk from 'redux-thunk';
+import { createStore, applyMiddleware, compose } from 'redux';
 import { Provider } from 'react-redux';
 import reducers from './reducers'
 import Chat from './components/Chat';
@@ -27,10 +28,15 @@ const initState = {
   },
 };
 
+const ext = window.__REDUX_DEVTOOLS_EXTENSION__;
+const devtoolMiddleware = ext && ext();
 const store = createStore(
   reducers,
   initState,
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
+  compose(
+    applyMiddleware(thunk),
+    devtoolMiddleware,
+  ),
 );
 
 
@@ -38,5 +44,5 @@ const container = document.getElementById('chat');
 render(
   <Provider store={store}>
     <Chat />
-  </Provider>,
-  container);
+  </Provider>
+, container);
