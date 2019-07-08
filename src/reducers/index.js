@@ -9,13 +9,28 @@ const channels = handleActions({
   },
 }, {});
 
-const messages = handleActions({
-  [actions.addMessage](state, { payload: { message } }) {
-    const { channelId } = message;
-    const channelMessages = state[channelId];
-    const newMessages = channelMessages ? [...channelMessages, message] : [message];
-    return { ...state, [channelId]: newMessages };
+const messageAddingState = handleActions({
+  [actions.addMessageRequest]() {
+    return 'requested';
   },
+  [actions.addMessageFailure]() {
+    return 'failed';
+  },
+  [actions.addMessageSuccess]() {
+    return 'finished';
+  },
+}, 'none');
+
+const messages = handleActions({
+  [actions.addMessage](state, { payload }) {
+    console.log(payload);
+  },
+  // [actions.addMessage](state, { payload }) {
+  //   const { channelId } = message.message;
+  //   const channelMessages = state[channelId];
+  //   const newMessages = channelMessages ? [...channelMessages, message] : [message];
+  //   return { ...state, [channelId]: newMessages };
+  // },
 }, {});
 
 // const channels = (state = {}, action) => {

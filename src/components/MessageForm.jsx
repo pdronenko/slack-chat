@@ -1,8 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Field, reduxForm } from 'redux-form';
+import { Field, reduxForm, SubmissionError  } from 'redux-form';
 import * as actions from '../actions';
-import routes from '../../server/routes';
 
 const mapStateToProps = (state) => {
   const {
@@ -17,25 +16,28 @@ const actionCreators = {
 };
 
 class MessageForm extends React.Component {
-  handleSubmit = (values) => {
+  handleSubmit = async (values) => {
     const { addMessage, reset, currentChannelId, username } = this.props;
     const message = {
       ...values,
       channelId: currentChannelId,
       username,
     };
-    console.log(routes())
-    addMessage({ message });
+    try {
+      await addMessage({ message });
+    } catch (e) {
+      throw new SubmissionError({ _error: e.message });
+    }
     reset();
   }
 
   render() {
-    const { handleSubmit } = this.props;
+    const { handleSubmit, submitting, pristine, error } = this.props;
     return (
       <form onSubmit={handleSubmit(this.handleSubmit)}>
         <div className="input-group mb-3">
           <div className="input-group-prepend">
-            <input className="btn btn-outline-primary" type="submit" value="SEND" />
+            <input className="btn btn-outline-primary" type="submit" value="SEND" disabled={pristine || submitting} />
           </div>
           <Field
             name="text"
@@ -45,6 +47,7 @@ class MessageForm extends React.Component {
             className="form-control"
           />
         </div>
+        {error && <div className="ml-3">{error}</div>}
       </form>
     );
   }
