@@ -43,8 +43,7 @@ socket.on('connect', function () {
   console.log('socket connected');
 })
 socket.on('newMessage', function ({ data: { attributes } }) {
-  initState.messages = 7;
-  //initState.messages[attributes.channelId].push(attributes);
+  initState.messages[attributes.channelId].push(attributes);
 })
 
 const ext = window.__REDUX_DEVTOOLS_EXTENSION__;
