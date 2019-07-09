@@ -1,6 +1,8 @@
 import React from 'react';
 import cn from 'classnames';
 import { connect } from 'react-redux';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import * as actions from '../actions';
 import NewChannelForm from './NewChannelForm';
 
@@ -39,6 +41,7 @@ class Channels extends React.Component {
           onClick={this.handleChangeChannel}
         >
         {name}
+        <FontAwesomeIcon icon={faTrashAlt} size="xs" color="white" />
         </a>
       );
     })
