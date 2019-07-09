@@ -2,6 +2,7 @@ import React from 'react';
 import cn from 'classnames';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
+import NewChannelForm from './NewChannelForm';
 
 const mapStateToProps = ({ channels }) => ({ channels });
 
@@ -49,7 +50,7 @@ class Channels extends React.Component {
         <div id="channels" className="list-group">
           {this.renderChannels()}
         </div>
-        <button type="button" className="btn btn-primary">Add new Channel</button>
+        <NewChannelForm />
       </>
     );
   }

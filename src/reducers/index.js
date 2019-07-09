@@ -5,6 +5,15 @@ import { union } from 'lodash';
 import * as actions from '../actions';
 
 const channels = handleActions({
+  [actions.addChannelSuccess](state, { payload: { newChannel } }) {
+    const { allIds, byId, currentChannelId } = state;
+    const { id } = newChannel;
+    return {
+      allIds: [...allIds, id],
+      byId: { ...byId, [id]: newChannel },
+      currentChannelId,
+    };
+  },
   [actions.changeChannel](state, { payload: { channelId } }) {
     return { ...state, currentChannelId: channelId };
   },
@@ -30,6 +39,18 @@ const messageFetchingState = handleActions({
     return 'failed';
   },
   [actions.addMessageSuccess]() {
+    return 'finished';
+  },
+}, 'none');
+
+const channelAddingState = handleActions({
+  [actions.addChannelRequest]() {
+    return 'requested';
+  },
+  [actions.addChannelFailure]() {
+    return 'failed';
+  },
+  [actions.addChannelSuccess]() {
     return 'finished';
   },
 }, 'none');
