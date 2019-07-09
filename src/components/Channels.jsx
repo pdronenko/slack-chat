@@ -10,7 +10,8 @@ const mapStateToProps = ({ channels }) => ({ channels });
 
 const actionCreators = {
   changeChannel: actions.changeChannel,
-  fetchMessages: actions.fetchMessages,
+  renameChannel: actions.renameChannel,
+  removeChannel: actions.removeChannel,
 };
 
 @connect(mapStateToProps, actionCreators)
@@ -20,17 +21,55 @@ class Channels extends React.Component {
     const channelId = Number(e.target.dataset.channelId);
     const { changeChannel, fetchMessages } = this.props;
     changeChannel({ channelId });
-    fetchMessages(channelId);
+  }
+
+  handleRenameChannel = channelId => async (e) => {
+    e.stopPropagation();
+    const { renameChannel } = this.props;
+    try {
+      await renameChannel(channelId, 'newGoodName');
+    } catch (e) {
+      throw new Error(e);
+    }
+  }
+
+  handleRemoveChannel = channelId => async (e) => {
+    e.stopPropagation();
+    const { removeChannel } = this.props;
+    try {
+      await removeChannel(channelId);
+    } catch (e) {
+      throw new Error(e);
+    }
+  }
+
+  renderEditButtons(isActive, channelId) {
+    return (
+      <div className="float-right">
+        <FontAwesomeIcon
+          onClick={this.handleRenameChannel(channelId)}
+          icon={faPencilAlt}
+          color={isActive ? 'white' : 'LightGrey'}
+          className="mr-2"
+        />
+        <FontAwesomeIcon
+          onClick={this.handleRemoveChannel(channelId)}
+          icon={faTrashAlt}
+          color={isActive ? 'white' : 'LightCoral'}
+        />
+      </div>
+    );
   }
 
   renderChannels() {
     const { byId, allIds, currentChannelId } = this.props.channels;
 
     return allIds.map((id) => {
-      const { name } = byId[id];
+      const isActive = id === currentChannelId;
+      const { name, removable } = byId[id];
       const classes = cn ({
         ['list-group-item-action list-group-item']: true,
-        active: id === currentChannelId,
+        active: isActive,
       });
       return (
         <a
@@ -41,8 +80,7 @@ class Channels extends React.Component {
           onClick={this.handleChangeChannel}
         >
         {name}
-        <FontAwesomeIcon icon={faTrashAlt} size="xs" color="white" />
-        <FontAwesomeIcon icon={faPencilAlt} size="xs" color="white" />
+        {removable && this.renderEditButtons(isActive, id)}
         </a>
       );
     })

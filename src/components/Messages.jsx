@@ -34,6 +34,12 @@ class Messages extends React.Component {
     const { fetchMessages, currentChannelId } = this.props;
     fetchMessages(currentChannelId);
   }
+  componentDidUpdate(prevProps) {
+    const { currentChannelId, fetchMessages } = this.props;
+    if (prevProps.currentChannelId !== currentChannelId) {
+      fetchMessages(currentChannelId);
+    }
+  }
 
   render() {
     return (
