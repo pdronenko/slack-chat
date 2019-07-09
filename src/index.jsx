@@ -23,7 +23,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 const getUsername = () => {
   if (!cookies.get('username')) {
-    cookies.set('username', faker.name.findName());
+    cookies.set('username', faker.name.findName(), { expires: 7 });
   }
   return cookies.get('username');
 };
