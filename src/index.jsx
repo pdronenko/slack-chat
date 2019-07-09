@@ -37,7 +37,6 @@ const initState = {
   messages: [],
 };
 
-
 const middleware = [thunk];
 
 const store = createStore(
@@ -46,7 +45,7 @@ const store = createStore(
   composeWithDevTools(applyMiddleware(...middleware))
 );
 
-const socket = io.connect('http://localhost:4000');
+const socket = io.connect();
 socket.on('connect', function () {
   console.log('socket connected');
 })
