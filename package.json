@@ -85,6 +85,7 @@
     "flow-typed": "^2.5.2",
     "jest": "^23.6.0",
     "jest-cli": "^23.6.0",
-    "nodemon": "^1.19.1"
+    "nodemon": "^1.19.1",
+    "redux-devtools-extension": "^2.13.8"
   }
 }

@@ -1,15 +1,28 @@
 import { combineReducers, createStore } from 'redux';
 import { reducer as formReducer } from 'redux-form';
 import { handleActions } from 'redux-actions';
+import { union } from 'lodash';
 import * as actions from '../actions';
 
 const channels = handleActions({
-  [actions.changeChannel](state, { payload: { id } }) {
-    return { ...state, currentChannelId: id };
+  [actions.changeChannel](state, { payload: { channelId } }) {
+    return { ...state, currentChannelId: channelId };
   },
 }, {});
 
 const messageAddingState = handleActions({
+  [actions.fetchMessagesRequest]() {
+    return 'requested';
+  },
+  [actions.fetchMessagesFailure]() {
+    return 'failed';
+  },
+  [actions.fetchMessagesSuccess]() {
+    return 'finished';
+  },
+}, 'none');
+
+const messageFetchingState = handleActions({
   [actions.addMessageRequest]() {
     return 'requested';
   },
@@ -22,58 +35,17 @@ const messageAddingState = handleActions({
 }, 'none');
 
 const messages = handleActions({
-  [actions.addMessage](state, { payload }) {
-    console.log(payload);
+  [actions.fetchMessagesSuccess](state, { payload: { messages } }) {
+    return messages.map(msg => msg.attributes);
   },
-  // [actions.addMessage](state, { payload }) {
-  //   const { channelId } = message.message;
-  //   const channelMessages = state[channelId];
-  //   const newMessages = channelMessages ? [...channelMessages, message] : [message];
-  //   return { ...state, [channelId]: newMessages };
-  // },
+  [actions.addMessageSuccess](state, { payload: { message } }) {
+    return [...state, message];
+  },
 }, {});
-
-// const channels = (state = {}, action) => {
-//   switch (action.type) {
-//     case 'CHANNEL_ADD':
-//       return state;
-//     case 'CHANNEL_REMOVE':
-//       return state;
-//     case 'CHANNEL_RENAME':
-//       return state;
-//     case 'CHANNEL_CHANGE':
-//       return { ...state, currentChannelId: action.payload.id };
-//     default:
-//       return state;
-//   }
-// };
-
-// const messages = (state = {}, action) => {
-//   switch (action.type) {
-//     case 'MESSAGE_ADD':
-//       const { message } = action.payload;
-//       const { channelId } = message;
-//       const channelMessages = state[channelId];
-//       const newMessages = channelMessages ? [...channelMessages, message] : [message];
-//       return { ...state, [channelId]: newMessages };
-//     case 'CHANNEL_CHANGE':
-//       return state;
-//     default:
-//       return state;
-//   }
-// };
-
-const userData = (state = {}, action) => {
-  switch (action.type) {
-    default:
-      return state;
-  }
-};
 
 export default combineReducers({
   channels,
   messages,
-  userData,
   form: formReducer,
 });
 

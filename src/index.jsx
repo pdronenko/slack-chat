@@ -13,6 +13,9 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import { Provider } from 'react-redux';
 import reducers from './reducers'
 import Chat from './components/Chat';
+import UsernameContext from './UsernameContext';
+import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly';
+import { addMessageSuccess } from './actions';
 
 if (process.env.NODE_ENV !== 'production') {
   localStorage.debug = 'chat:*';
@@ -31,36 +34,31 @@ const initState = {
     allIds: gon.channels.map(ch => ch.id),
     currentChannelId: gon.currentChannelId,
   },
-  messages: gon.messages
-    .reduce((acc, msg) => ({ ...acc, [msg.channelId]: union(acc[msg.channelId], [msg]) }), {}),
-  userData: {
-    username: getUsername(),
-  },
+  messages: [],
 };
+
+
+const middleware = [thunk];
+
+const store = createStore(
+  reducers,
+  initState,
+  composeWithDevTools(applyMiddleware(...middleware))
+);
 
 const socket = io.connect('http://localhost:4000');
 socket.on('connect', function () {
   console.log('socket connected');
 })
 socket.on('newMessage', function ({ data: { attributes } }) {
-  initState.messages[attributes.channelId].push(attributes);
+  store.dispatch(addMessageSuccess({ message: attributes }));
 })
-
-const ext = window.__REDUX_DEVTOOLS_EXTENSION__;
-const devtoolMiddleware = ext && ext();
-const store = createStore(
-  reducers,
-  initState,
-  compose(
-    applyMiddleware(thunk),
-    devtoolMiddleware,
-  ),
-);
-
 
 const container = document.getElementById('chat');
 render(
   <Provider store={store}>
-    <Chat />
+    <UsernameContext.Provider value={getUsername()}>
+      <Chat />
+    </UsernameContext.Provider>
   </Provider>
 , container);

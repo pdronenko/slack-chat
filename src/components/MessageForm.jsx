@@ -2,29 +2,28 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm, SubmissionError  } from 'redux-form';
 import * as actions from '../actions';
+import UsernameContext from '../UsernameContext';
 
-const mapStateToProps = (state) => {
-  const {
-    channels: { currentChannelId },
-    userData: { username },
-  } = state;
-  return { currentChannelId, username };
-};
+const mapStateToProps = ({ channels: { currentChannelId } }) => ({ currentChannelId });
 
 const actionCreators = {
   addMessage: actions.addMessage,
 };
 
+@connect(mapStateToProps, actionCreators)
 class MessageForm extends React.Component {
+  static contextType = UsernameContext;
+
   handleSubmit = async (values) => {
-    const { addMessage, reset, currentChannelId, username } = this.props;
+    const { addMessage, reset, currentChannelId } = this.props;
+    const username = this.context;
     const message = {
       ...values,
       channelId: currentChannelId,
       username,
     };
     try {
-      await addMessage({ message });
+      await addMessage(message);
     } catch (e) {
       throw new SubmissionError({ _error: e.message });
     }
@@ -45,6 +44,8 @@ class MessageForm extends React.Component {
             component="input"
             type="text"
             className="form-control"
+            disabled={submitting}
+            autoFocus
           />
         </div>
         {error && <div className="ml-3">{error}</div>}
@@ -53,7 +54,6 @@ class MessageForm extends React.Component {
   }
 }
 
-const ConnectedNewMessageForm = connect(mapStateToProps, actionCreators)(MessageForm);
 export default reduxForm({
   form: 'newMessage',
-})(ConnectedNewMessageForm);
+})(MessageForm);

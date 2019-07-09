@@ -10,9 +10,10 @@ const Chat = () => (
       <UserProfile />
       <Channels />
     </div>
-    <Messages>
+    <div id="body" className="col-8">
+      <Messages />
       <MessageForm />
-    </Messages>
+    </div>
   </div>
 );
 

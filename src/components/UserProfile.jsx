@@ -1,19 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import UsernameContext from '../UsernameContext';
 
-const mapStateToProps = ({ userData: { username } }) => ({ username });
+const UserProfile = () => (
+  <div>
+    Welcome,
+    <br />
+    <UsernameContext.Consumer>
+      {username => <span className="text-primary"><strong>{username}</strong></span>}
+    </UsernameContext.Consumer>
+  </div>
+);
 
-class UserProfile extends React.Component {
-  render() {
-    const { username } = this.props;
-    return (
-      <div>
-        Welcome,
-        <br />
-        <strong>{username}</strong>
-      </div>
-    );
-  }
-}
-
-export default connect(mapStateToProps)(UserProfile);
+export default UserProfile;

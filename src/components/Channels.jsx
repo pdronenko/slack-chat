@@ -7,14 +7,17 @@ const mapStateToProps = ({ channels }) => ({ channels });
 
 const actionCreators = {
   changeChannel: actions.changeChannel,
+  fetchMessages: actions.fetchMessages,
 };
 
+@connect(mapStateToProps, actionCreators)
 class Channels extends React.Component {
   handleChangeChannel = (e) => {
     e.preventDefault();
-    const id = Number(e.target.dataset.channelId);
-    const { changeChannel } = this.props;
-    changeChannel({ id });
+    const channelId = Number(e.target.dataset.channelId);
+    const { changeChannel, fetchMessages } = this.props;
+    changeChannel({ channelId });
+    fetchMessages(channelId);
   }
 
   renderChannels() {
@@ -42,9 +45,14 @@ class Channels extends React.Component {
 
   render() {
     return (
-      <div id="channels" className="list-group">{this.renderChannels()}</div>
+      <>
+        <div id="channels" className="list-group">
+          {this.renderChannels()}
+        </div>
+        <button type="button" className="btn btn-primary">Add new Channel</button>
+      </>
     );
   }
 }
 
-export default connect(mapStateToProps, actionCreators)(Channels);
+export default Channels;
