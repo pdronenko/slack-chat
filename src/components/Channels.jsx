@@ -12,9 +12,8 @@ const mapStateToProps = ({ channels, chatUIState: { currentChannelId, fetchMessa
 
 const actionCreators = {
   changeChannel: actions.changeChannel,
-  renameChannel: actions.renameChannel,
-  removeChannel: actions.removeChannel,
-  renameModalShow: actions.renameModalShow,
+  showRenameModal: actions.showRenameModal,
+  showRemoveModal: actions.showRemoveModal,
 };
 
 @connect(mapStateToProps, actionCreators)
@@ -26,24 +25,18 @@ class Channels extends React.Component {
     changeChannel({ channelId });
   }
 
-  handleRemoveChannel = channelId => async (e) => {
-    e.stopPropagation();
-    const { removeChannel } = this.props;
-    try {
-      await removeChannel(channelId);
-    } catch (e) {
-      throw new Error(e);
-    }
-  }
-
   stopPropagation = (e) => {
     e.stopPropagation();
   }
 
   handleShowRenameModal = channelId => () => {
-    const { renameModalShow } = this.props;
+    const { showRenameModal } = this.props;
+    showRenameModal({ channelId });
+  }
 
-    renameModalShow({ channelId });
+  handleShowRemoveModal = channelId => () => {
+    const { showRemoveModal } = this.props;
+    showRemoveModal({ channelId });
   }
 
   renderEditButtons(isActive, channelId) {
@@ -57,6 +50,7 @@ class Channels extends React.Component {
           className="mr-2"
         />
         <FontAwesomeIcon
+          onClick={this.handleShowRemoveModal(channelId)}
           icon={faTrashAlt}
           size="lg"
           color={isActive ? 'white' : 'LightCoral'}

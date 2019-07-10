@@ -57,6 +57,7 @@ class MessageForm extends React.Component {
             className="form-control"
             disabled={submitting}
             autoFocus
+            placeholder="Message"
           />
         </div>
         {error && <div className="ml-3">{error}</div>}

@@ -57,12 +57,20 @@ const chatUIState = handleActions({
   [actions.fetchMessagesFailure](state) {
     return { ...state, fetchMessageStatus: 'failure' };
   },
-  [actions.renameModalShow](state, { payload: { channelId } }) {
-
-    return { ...state, renameModalState: true };
+  [actions.showRenameModal](state, { payload: { channelId } }) {
+    return { ...state, renameModalState: true, channelToRename: channelId };
+  },
+  [actions.showRemoveModal](state, { payload: { channelId } }) {
+    return { ...state, removeModalState: true, channelToRemove: channelId };
   },
   [actions.closeModal](state) {
-    return { ...state, renameModalState: false, deleteModalState: false };
+    return { ...state, renameModalState: false, removeModalState: false };
+  },
+  [actions.renameChannelSuccess](state) {
+    return { ...state, renameModalState: false };
+  },
+  [actions.removeChannelSuccess](state) {
+    return { ...state, removeModalState: false };
   },
 }, {});
 

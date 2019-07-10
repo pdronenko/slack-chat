@@ -39,8 +39,8 @@ const initState = {
     fetchMessageStatus: 'idle', // request, success, failure
     renameModalState: false,
     channelToRename: null,
-    deleteModalState: false,
-    channelToDelete: null,
+    removeModalState: false,
+    channelToRemove: null,
   },
 };
 

@@ -5,6 +5,7 @@ import Messages from './Messages';
 import MessageForm from './MessageForm';
 import NewChannelForm from './NewChannelForm';
 import RenameChannelModal from './RenameChannelModal';
+import RemoveChannelModal from './RemoveChannelModal';
 
 const Chat = () => (
   <div className="row justify-content-start">
@@ -13,6 +14,7 @@ const Chat = () => (
       <Channels />
       <NewChannelForm />
       <RenameChannelModal />
+      <RemoveChannelModal />
     </div>
     <div id="body" className="col-8">
       <Messages />
