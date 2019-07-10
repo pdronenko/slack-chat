@@ -1,7 +1,6 @@
-import { combineReducers, createStore } from 'redux';
+import { combineReducers } from 'redux';
 import { reducer as formReducer } from 'redux-form';
 import { handleActions } from 'redux-actions';
-import { union } from 'lodash';
 import update from 'immutability-helper';
 import * as actions from '../actions';
 

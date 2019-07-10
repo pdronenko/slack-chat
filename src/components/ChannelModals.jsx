@@ -1,11 +1,17 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Field, reduxForm, SubmissionError  } from 'redux-form';
+import { Field, reduxForm, SubmissionError } from 'redux-form';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import * as actions from '../actions';
 
-const mapStateToProps = ({ chatUIState: { channelModalState, removeModalState, channelToEdit } }) => {
+const mapStateToProps = ({
+  chatUIState: {
+    channelModalState,
+    removeModalState,
+    channelToEdit
+  },
+}) => {
   return { channelModalState, removeModalState, channelToEdit };
 };
 

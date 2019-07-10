@@ -38,7 +38,7 @@ export const addMessage = message => async (dispatch) => {
     });
   } catch (e) {
     dispatch(addMessageFailure());
-    console.log(e)
+    console.log(e);
     throw e;
   }
 };
@@ -53,19 +53,19 @@ export const addChannel = name => async (dispatch) => {
     });
   } catch (e) {
     dispatch(addChannelFailure());
-    console.log(e)
+    console.log(e);
     throw e;
   }
 };
 
-export const fetchMessages =  currentChannelId => async (dispatch) => {
+export const fetchMessages = currentChannelId => async (dispatch) => {
   dispatch(fetchMessagesRequest());
   try {
     const { data } = await axios.get(routes.messagesPath(currentChannelId));
     dispatch(fetchMessagesSuccess({ messages: data }));
   } catch (e) {
     dispatch(fetchMessagesFailure());
-    console.log(e)
+    console.log(e);
     throw e;
   }
 };
@@ -80,7 +80,7 @@ export const renameChannel = (channelId, name) => async (dispatch) => {
     });
   } catch (e) {
     dispatch(renameChannelFailure());
-    console.log(e)
+    console.log(e);
     throw e;
   }
 };
@@ -91,7 +91,7 @@ export const removeChannel = channelId => async (dispatch) => {
     await axios.delete(routes.channelPath(channelId));
   } catch (e) {
     dispatch(removeChannelFailure());
-    console.log(e)
+    console.log(e);
     throw e;
   }
 };
