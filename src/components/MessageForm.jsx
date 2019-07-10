@@ -4,7 +4,9 @@ import { Field, reduxForm, SubmissionError  } from 'redux-form';
 import * as actions from '../actions';
 import UsernameContext from '../UsernameContext';
 
-const mapStateToProps = ({ channels: { currentChannelId } }) => ({ currentChannelId });
+const mapStateToProps = ({ chatUIState: {
+    currentChannelId, fetchMessageStatus,
+  } }) => ({ currentChannelId, fetchMessageStatus });
 
 const actionCreators = {
   addMessage: actions.addMessage,
@@ -31,12 +33,21 @@ class MessageForm extends React.Component {
   }
 
   render() {
-    const { handleSubmit, submitting, pristine, error } = this.props;
+    const {
+      handleSubmit, submitting, pristine, error, fetchMessageStatus,
+    } = this.props;
     return (
       <form onSubmit={handleSubmit(this.handleSubmit)}>
         <div className="input-group mb-3">
           <div className="input-group-prepend">
-            <input className="btn btn-outline-primary" type="submit" value="SEND" disabled={pristine || submitting} />
+            <button
+              className="btn btn-outline-primary"
+              type="submit"
+              value="SEND"
+              disabled={pristine || submitting || fetchMessageStatus !== 'success'}>
+              {submitting && <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>}
+              {!submitting && 'SEND'}
+            </button>
           </div>
           <Field
             name="text"

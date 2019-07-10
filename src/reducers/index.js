@@ -33,9 +33,6 @@ const channels = handleActions({
       currentChannelId: newCurrentChannelId,
     };
   },
-  [actions.changeChannel](state, { payload: { channelId } }) {
-    return { ...state, currentChannelId: channelId };
-  },
 }, {});
 
 const messages = handleActions({
@@ -47,9 +44,32 @@ const messages = handleActions({
   },
 }, {});
 
+const chatUIState = handleActions({
+  [actions.changeChannel](state, { payload: { channelId } }) {
+    return { ...state, currentChannelId: channelId };
+  },
+  [actions.fetchMessagesRequest](state) {
+    return { ...state, fetchMessageStatus: 'request' };
+  },
+  [actions.fetchMessagesSuccess](state) {
+    return { ...state, fetchMessageStatus: 'success' };
+  },
+  [actions.fetchMessagesFailure](state) {
+    return { ...state, fetchMessageStatus: 'failure' };
+  },
+  [actions.renameModalShow](state, { payload: { channelId } }) {
+
+    return { ...state, renameModalState: true };
+  },
+  [actions.closeModal](state) {
+    return { ...state, renameModalState: false, deleteModalState: false };
+  },
+}, {});
+
 export default combineReducers({
   channels,
   messages,
+  chatUIState,
   form: formReducer,
 });
 

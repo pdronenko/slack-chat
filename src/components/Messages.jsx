@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 import * as actions from '../actions';
 import UsernameContext from '../UsernameContext';
 
-const mapStateToProps = ({ channels: { currentChannelId }, messages }) => {
-  return { messages, currentChannelId };
+const mapStateToProps = ({ chatUIState: { currentChannelId, fetchMessageStatus }, messages }) => {
+  return { messages, currentChannelId, fetchMessageStatus };
 };
 
 const actionCreators = {
@@ -17,17 +17,35 @@ class Messages extends React.Component {
   static contextType = UsernameContext;
 
   renderMessages() {
-    const { messages, currentChannelId } = this.props;
-    if (messages.length < 1) {
-      return 'no messages';
+    const { messages, currentChannelId, fetchMessageStatus } = this.props;
+    switch (fetchMessageStatus) {
+      case 'request': {
+        return (
+          <div className="d-flex justify-content-center text-primary w-100 h-50">
+            <div className="spinner-border" role="status">
+              <span className="sr-only">Loading...</span>
+            </div>
+          </div>
+        );
+      } case 'failure': {
+        return 'fail';
+      } case 'success': {
+        if (messages.length < 1) {
+          return 'no messages';
+        }
+        return (
+          <div className="mb-auto m-1">
+          {messages.map(({ text, channelId, username }) => (
+            <div key={uniqueId()} className="text-wrap">
+              <strong>{username === this.context ? <span className="text-primary">{username}</span> : username}:</strong> {text}
+            </div>
+            )
+          )}
+          </div>
+        );
+      } default:
+        return 'nooo';
     }
-    return messages.map(({ text, channelId, username }) => {
-      return (
-        <div key={uniqueId()} className="text-wrap">
-          <strong>{username === this.context ? <span className="text-primary">{username}</span> : username}:</strong> {text}
-        </div>
-      );
-    });
   }
 
   componentDidMount() {
@@ -43,15 +61,13 @@ class Messages extends React.Component {
 
   render() {
     return (
-        <div
-          id="messages"
-          className="d-flex align-items-start flex-column-reverse border overflow-auto"
-          style={{ height: '70vh' }}
-        >
-          <div className="mb-auto">
-            {this.renderMessages()}
-          </div>
-        </div>
+      <div
+        id="messages"
+        className="d-flex align-items-start flex-column-reverse border overflow-auto"
+        style={{ height: '70vh' }}
+      >
+        {this.renderMessages()}
+      </div>
     );
   }
 }

@@ -32,9 +32,16 @@ const initState = {
   channels: {
     byId: gon.channels.reduce((acc, ch) => ({ ...acc, [ch.id]: ch }), {}),
     allIds: gon.channels.map(ch => ch.id),
-    currentChannelId: gon.currentChannelId,
   },
   messages: [],
+  chatUIState: {
+    currentChannelId: 1,
+    fetchMessageStatus: 'idle', // request, success, failure
+    renameModalState: false,
+    channelToRename: null,
+    deleteModalState: false,
+    channelToDelete: null,
+  },
 };
 
 const middleware = [thunk];

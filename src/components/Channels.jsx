@@ -3,15 +3,18 @@ import cn from 'classnames';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashAlt, faPencilAlt } from '@fortawesome/free-solid-svg-icons';
+import Dropdown from 'react-bootstrap/Dropdown';
 import * as actions from '../actions';
-import NewChannelForm from './NewChannelForm';
 
-const mapStateToProps = ({ channels }) => ({ channels });
+const mapStateToProps = ({ channels, chatUIState: { currentChannelId, fetchMessageStatus } }) => {
+  return { channels, currentChannelId, fetchMessageStatus };
+};
 
 const actionCreators = {
   changeChannel: actions.changeChannel,
   renameChannel: actions.renameChannel,
   removeChannel: actions.removeChannel,
+  renameModalShow: actions.renameModalShow,
 };
 
 @connect(mapStateToProps, actionCreators)
@@ -21,16 +24,6 @@ class Channels extends React.Component {
     const channelId = Number(e.target.dataset.channelId);
     const { changeChannel, fetchMessages } = this.props;
     changeChannel({ channelId });
-  }
-
-  handleRenameChannel = channelId => async (e) => {
-    e.stopPropagation();
-    const { renameChannel } = this.props;
-    try {
-      await renameChannel(channelId, 'newGoodName');
-    } catch (e) {
-      throw new Error(e);
-    }
   }
 
   handleRemoveChannel = channelId => async (e) => {
@@ -43,18 +36,29 @@ class Channels extends React.Component {
     }
   }
 
+  stopPropagation = (e) => {
+    e.stopPropagation();
+  }
+
+  handleShowRenameModal = channelId => () => {
+    const { renameModalShow } = this.props;
+
+    renameModalShow({ channelId });
+  }
+
   renderEditButtons(isActive, channelId) {
     return (
-      <div className="float-right">
+      <div className="float-right" onClick={this.stopPropagation}>
         <FontAwesomeIcon
-          onClick={this.handleRenameChannel(channelId)}
+          onClick={this.handleShowRenameModal(channelId)}
           icon={faPencilAlt}
+          size="lg"
           color={isActive ? 'white' : 'LightGrey'}
           className="mr-2"
         />
         <FontAwesomeIcon
-          onClick={this.handleRemoveChannel(channelId)}
           icon={faTrashAlt}
+          size="lg"
           color={isActive ? 'white' : 'LightCoral'}
         />
       </div>
@@ -62,7 +66,11 @@ class Channels extends React.Component {
   }
 
   renderChannels() {
-    const { byId, allIds, currentChannelId } = this.props.channels;
+    const {
+      channels: { byId, allIds },
+      currentChannelId,
+      fetchMessageStatus,
+    } = this.props;
 
     return allIds.map((id) => {
       const isActive = id === currentChannelId;
@@ -77,7 +85,7 @@ class Channels extends React.Component {
           key={id}
           className={classes}
           data-channel-id={id}
-          onClick={this.handleChangeChannel}
+          onClick={fetchMessageStatus === 'success' ? this.handleChangeChannel : null}
         >
         {name}
         {removable && this.renderEditButtons(isActive, id)}
@@ -88,12 +96,9 @@ class Channels extends React.Component {
 
   render() {
     return (
-      <>
-        <div id="channels" className="list-group">
-          {this.renderChannels()}
-        </div>
-        <NewChannelForm />
-      </>
+      <div id="channels" className="list-group">
+        {this.renderChannels()}
+      </div>
     );
   }
 }

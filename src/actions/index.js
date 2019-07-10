@@ -23,6 +23,8 @@ export const addChannelSuccess = createAction('CHANNEL_ADD_SUCCESS');
 export const addChannelFailure = createAction('CHANNEL_ADD_FAILURE');
 
 export const changeChannel = createAction('CHANNEL_CHANGE');
+export const renameModalShow = createAction('MODAL_RENAME_SHOW');
+export const closeModal = createAction('MODAL_CLOSE');
 
 export const addMessage = message => async (dispatch) => {
   dispatch(addMessageRequest());
