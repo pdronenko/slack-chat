@@ -37,10 +37,9 @@ const initState = {
   chatUIState: {
     currentChannelId: 1,
     fetchMessageStatus: 'idle', // request, success, failure
-    renameModalState: false,
-    channelToRename: null,
+    channelToEdit: null,
+    channelModalState: false,
     removeModalState: false,
-    channelToRemove: null,
   },
 };
 

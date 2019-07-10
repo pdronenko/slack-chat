@@ -57,20 +57,25 @@ const chatUIState = handleActions({
   [actions.fetchMessagesFailure](state) {
     return { ...state, fetchMessageStatus: 'failure' };
   },
-  [actions.showRenameModal](state, { payload: { channelId } }) {
-    return { ...state, renameModalState: true, channelToRename: channelId };
+  [actions.showChannelModal](state, { payload: { channelId } }) {
+    return { ...state, channelModalState: true, channelToEdit: channelId };
   },
-  [actions.showRemoveModal](state, { payload: { channelId } }) {
-    return { ...state, removeModalState: true, channelToRemove: channelId };
+  [actions.showRemoveModal](state) {
+    return { ...state, removeModalState: true };
   },
   [actions.closeModal](state) {
-    return { ...state, renameModalState: false, removeModalState: false };
+    return { ...state, channelModalState: false, removeModalState: false };
   },
   [actions.renameChannelSuccess](state) {
-    return { ...state, renameModalState: false };
+    return { ...state, channelModalState: false };
   },
-  [actions.removeChannelSuccess](state) {
-    return { ...state, removeModalState: false };
+  [actions.removeChannelSuccess](state, { payload: { id } }) {
+    const { currentChannelId } = state;
+    return {
+      ...state,
+      removeModalState: false,
+      currentChannelId: id === currentChannelId ? 1 : currentChannelId,
+    };
   },
 }, {});
 
@@ -80,39 +85,3 @@ export default combineReducers({
   chatUIState,
   form: formReducer,
 });
-
-// const messageAddingState = handleActions({
-//   [actions.fetchMessagesRequest]() {
-//     return 'requested';
-//   },
-//   [actions.fetchMessagesFailure]() {
-//     return 'failed';
-//   },
-//   [actions.fetchMessagesSuccess]() {
-//     return 'finished';
-//   },
-// }, 'none');
-//
-// const messageFetchingState = handleActions({
-//   [actions.addMessageRequest]() {
-//     return 'requested';
-//   },
-//   [actions.addMessageFailure]() {
-//     return 'failed';
-//   },
-//   [actions.addMessageSuccess]() {
-//     return 'finished';
-//   },
-// }, 'none');
-//
-// const channelAddingState = handleActions({
-//   [actions.addChannelRequest]() {
-//     return 'requested';
-//   },
-//   [actions.addChannelFailure]() {
-//     return 'failed';
-//   },
-//   [actions.addChannelSuccess]() {
-//     return 'finished';
-//   },
-// }, 'none');

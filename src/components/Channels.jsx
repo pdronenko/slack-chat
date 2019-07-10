@@ -1,8 +1,6 @@
 import React from 'react';
 import cn from 'classnames';
 import { connect } from 'react-redux';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrashAlt, faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 import Dropdown from 'react-bootstrap/Dropdown';
 import * as actions from '../actions';
 
@@ -12,8 +10,7 @@ const mapStateToProps = ({ channels, chatUIState: { currentChannelId, fetchMessa
 
 const actionCreators = {
   changeChannel: actions.changeChannel,
-  showRenameModal: actions.showRenameModal,
-  showRemoveModal: actions.showRemoveModal,
+  showChannelModal: actions.showChannelModal,
 };
 
 @connect(mapStateToProps, actionCreators)
@@ -25,37 +22,21 @@ class Channels extends React.Component {
     changeChannel({ channelId });
   }
 
-  stopPropagation = (e) => {
+  handleShowChannelModal = channelId => (e) => {
     e.stopPropagation();
-  }
-
-  handleShowRenameModal = channelId => () => {
-    const { showRenameModal } = this.props;
-    showRenameModal({ channelId });
-  }
-
-  handleShowRemoveModal = channelId => () => {
-    const { showRemoveModal } = this.props;
-    showRemoveModal({ channelId });
+    const { showChannelModal } = this.props;
+    showChannelModal({ channelId });
   }
 
   renderEditButtons(isActive, channelId) {
     return (
-      <div className="float-right" onClick={this.stopPropagation}>
-        <FontAwesomeIcon
-          onClick={this.handleShowRenameModal(channelId)}
-          icon={faPencilAlt}
-          size="lg"
-          color={isActive ? 'white' : 'LightGrey'}
-          className="mr-2"
-        />
-        <FontAwesomeIcon
-          onClick={this.handleShowRemoveModal(channelId)}
-          icon={faTrashAlt}
-          size="lg"
-          color={isActive ? 'white' : 'LightCoral'}
-        />
-      </div>
+      <button
+        type="button"
+        className={`btn btn-outline-${isActive ? 'light' : 'primary'} btn-sm float-right`}
+        onClick={this.handleShowChannelModal(channelId)}
+      >
+        EDIT
+      </button>
     );
   }
 
