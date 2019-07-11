@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm, SubmissionError  } from 'redux-form';
-import { values } from 'lodash';
+import values from 'lodash/values';
 import cn from 'classnames';
 import * as actions from '../actions';
 

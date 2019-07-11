@@ -1,9 +1,9 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../assets/application.css';
 import "@babel/polyfill";
-import faker from 'faker';
+import name from 'faker/lib/name';
 import gon from 'gon';
-import { union } from 'lodash';
+import union from 'lodash/union';
 import cookies from 'js-cookie';
 import io from 'socket.io-client';
 import React from 'react';
@@ -23,7 +23,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 const getUsername = () => {
   if (!cookies.get('username')) {
-    cookies.set('username', faker.name.findName(), { expires: 7 });
+    cookies.set('username', name.findName(), { expires: 7 });
   }
   return cookies.get('username');
 };
