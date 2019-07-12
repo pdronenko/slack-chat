@@ -16,8 +16,8 @@ const actionCreators = {
   fetchMessages: actions.fetchMessages,
 };
 
-@connect(mapStateToProps, actionCreators)
-export default class ConnectStatus extends React.Component {
+export default @connect(mapStateToProps, actionCreators)
+class ConnectStatus extends React.Component {
   handleFetchMessages = (e) => {
     e.preventDefault();
     const { fetchMessages, currentChannelId } = this.props;

@@ -16,6 +16,4 @@ export const normalizeChannelName = (name) => {
     : onlyLettersAndNumbers;
 };
 
-export const validateChannelName = channelNames => (name) => {
-  return channelNames.includes(name);
-};
+export const validateChannelName = channelNames => name => channelNames.includes(name);

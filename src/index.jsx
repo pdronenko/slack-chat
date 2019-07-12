@@ -1,6 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../assets/application.css';
-import "@babel/polyfill";
+import '@babel/polyfill';
 import faker from 'faker/locale/en';
 import gon from 'gon';
 import groupBy from 'lodash/groupBy';
@@ -9,10 +9,10 @@ import cookies from 'js-cookie';
 import React from 'react';
 import { render } from 'react-dom';
 import thunk from 'redux-thunk';
-import { createStore, applyMiddleware, compose } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
-import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly';
-import reducers from './reducers'
+import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly'; // eslint-disable-line
+import reducers from './reducers';
 import Chat from './components/Chat';
 import UsernameContext from './UsernameContext';
 import ioConnect from './ioClient';
@@ -47,7 +47,7 @@ const middleware = [thunk];
 const store = createStore(
   reducers,
   initState,
-  composeWithDevTools(applyMiddleware(...middleware))
+  composeWithDevTools(applyMiddleware(...middleware)),
 );
 
 ioConnect(store);
@@ -57,5 +57,6 @@ render(
     <UsernameContext.Provider value={getUsername()}>
       <Chat />
     </UsernameContext.Provider>
-  </Provider>
-, document.getElementById('chat'));
+  </Provider>,
+  document.getElementById('chat'),
+);

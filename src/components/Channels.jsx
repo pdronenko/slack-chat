@@ -14,8 +14,8 @@ const actionCreators = {
   showChannelModal: actions.showChannelModal,
 };
 
-@connect(mapStateToProps, actionCreators)
-export default class Channels extends React.Component {
+export default @connect(mapStateToProps, actionCreators)
+class Channels extends React.Component {
   handleChangeChannel = (e) => {
     e.preventDefault();
     const channelId = Number(e.target.dataset.channelId);

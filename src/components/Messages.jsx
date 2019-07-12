@@ -4,20 +4,25 @@ import { connect } from 'react-redux';
 import * as actions from '../actions';
 import UsernameContext from '../UsernameContext';
 
-const mapStateToProps = ({ chatUIState: { currentChannelId }, messages, messagesFetchingState }) => {
-  return {
+const mapStateToProps = ({
+  chatUIState: { currentChannelId },
+  messages,
+  messagesFetchingState,
+}) => {
+  const props = {
     messages: messages[currentChannelId],
     currentChannelId,
     messagesFetchingState,
   };
+  return props;
 };
 
 const actionCreators = {
   fetchMessages: actions.fetchMessages,
 };
 
-@connect(mapStateToProps, actionCreators)
-export default class Messages extends React.Component {
+export default @connect(mapStateToProps, actionCreators)
+class Messages extends React.Component {
   static contextType = UsernameContext;
 
   handleFetchMessages = () => {
@@ -36,7 +41,6 @@ export default class Messages extends React.Component {
   }
 
   renderFailure() {
-    const { fetchMessages } = this.props;
     return (
       <div className="d-flex align-items-center flex-column text-danger w-100 h-50">
         <div>
@@ -56,7 +60,7 @@ export default class Messages extends React.Component {
   }
 
   renderSuccess() {
-    const { messages, currentChannelId } = this.props;
+    const { messages } = this.props;
     if (!messages || messages.length < 1) {
       return (
         <div className="d-flex justify-content-center text-primary w-100 h-50">
@@ -66,12 +70,17 @@ export default class Messages extends React.Component {
     }
     return (
       <div className="mb-auto m-1">
-      {messages.map(({ text, channelId, username }) => (
-        <div key={uniqueId()} className="text-wrap">
-          <strong>{username === this.context ? <span className="text-primary">{username}</span> : username}:</strong> {text}
-        </div>
-        )
-      )}
+        {messages.map(({ text, username }) => (
+          <div key={uniqueId()} className="text-wrap">
+            <strong>
+              {username === this.context
+                ? <span className="text-primary">{username}</span>
+                : username
+              }
+            </strong>
+            {`: ${text}`}
+          </div>
+        ))}
       </div>
     );
   }

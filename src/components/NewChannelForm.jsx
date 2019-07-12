@@ -1,14 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Field, reduxForm, SubmissionError  } from 'redux-form';
+import { Field, reduxForm, SubmissionError } from 'redux-form';
 import values from 'lodash/values';
 import cn from 'classnames';
 import * as actions from '../actions';
 import { normalizeChannelName, validateChannelName } from '../fieldValidators';
 
-const mapStateToProps = ({ channels, form: { newChannel } }) => {
-  //console.log(newChannel)
-  //const { values: { newChannelName } } = newChannel;
+const mapStateToProps = ({ channels }) => {
   const channelNames = values(channels.byId).map(ch => ch.name);
   return { channelNames };
 };
@@ -30,7 +28,9 @@ class NewChannelForm extends React.Component {
   }
 
   render() {
-    const { handleSubmit, submitting, pristine, error, channelNames } = this.props;
+    const {
+      handleSubmit, submitting, pristine, error, channelNames,
+    } = this.props;
     const classes = cn({
       'form-control': true,
       'is-invalid': validateChannelName(channelNames),
