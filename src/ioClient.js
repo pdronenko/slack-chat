@@ -5,6 +5,7 @@ export default (dispatch) => {
   const socket = io.connect();
   socket.on('connect', function () {
     console.log('socket connected');
+    dispatch(actions.connectChat());
   });
   socket.on('newMessage', function ({ data: { attributes } }) {
     dispatch(actions.addMessageSuccess({ message: attributes }));
@@ -19,6 +20,7 @@ export default (dispatch) => {
     dispatch(actions.removeChannelSuccess({ id }));
   });
   socket.on('disconnect', function () {
-    console.log('nooo, disconnect');
+    console.log('socket disconnect');
+    dispatch(actions.disconnectChat());
   });
 };

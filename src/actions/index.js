@@ -2,6 +2,9 @@ import axios from 'axios';
 import { createAction } from 'redux-actions';
 import routes from '../routes';
 
+export const connectChat = createAction('CHAT_CONNECT');
+export const disconnectChat = createAction('CHAT_DISCONNECT');
+
 export const fetchMessagesRequest = createAction('MESSAGES_FETCH_REQUEST');
 export const fetchMessagesSuccess = createAction('MESSAGES_FETCH_SUCCESS');
 export const fetchMessagesFailure = createAction('MESSAGES_FETCH_FAILURE');

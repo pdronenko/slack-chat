@@ -4,6 +4,15 @@ import { handleActions } from 'redux-actions';
 import update from 'immutability-helper';
 import * as actions from '../actions';
 
+const chatConnectionState = handleActions({
+  [actions.disconnectChat]() {
+    return 'disconnected';
+  },
+  [actions.connectChat]() {
+    return 'connected';
+  },
+}, 'idle');
+
 const channels = handleActions({
   [actions.addChannelSuccess](state, { payload: { newChannel } }) {
     const { allIds, byId, currentChannelId } = state;
@@ -79,6 +88,7 @@ const chatUIState = handleActions({
 }, {});
 
 export default combineReducers({
+  chatConnectionState,
   channels,
   messages,
   chatUIState,

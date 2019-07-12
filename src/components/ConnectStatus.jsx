@@ -3,22 +3,37 @@ import { connect } from 'react-redux';
 import Alert from 'react-bootstrap/Alert';
 import * as actions from '../actions';
 
-const mapStateToProps = ({ channels, chatUIState: { currentChannelId, fetchMessageStatus } }) => {
-  return { channels, currentChannelId, fetchMessageStatus };
+const mapStateToProps = ({ chatConnectionState, chatUIState }) => {
+  const { currentChannelId } = chatUIState;
+  const props = {
+    chatConnectionState,
+    currentChannelId,
+  }
+  return props;
 };
 
 const actionCreators = {
-//  changeChannel: actions.changeChannel,
+  fetchMessages: actions.fetchMessages,
 };
 
 @connect(mapStateToProps, actionCreators)
 export default class ConnectStatus extends React.Component {
+  handleFetchMessages = (e) => {
+    e.preventDefault();
+    const { fetchMessages, currentChannelId } = this.props;
+    fetchMessages(currentChannelId);
+  }
+
   render() {
+    const { chatConnectionState } = this.props;
     return (
-      <Alert  variant="success">
-        This is a  alert with{' '}
-        <Alert.Link href="#">an example link</Alert.Link>. Give it a click if you
-        like.
+      <Alert show={chatConnectionState === 'disconnected'} variant="danger">
+        Disconnected :-(
+        <br />
+        You can try to{' '}
+        <Alert.Link href="#" onClick={this.handleFetchMessages}>
+          <u>reconnect</u>
+        </Alert.Link>.
       </Alert>
     );
   }
