@@ -4,11 +4,11 @@ import { connect } from 'react-redux';
 import * as actions from '../actions';
 import UsernameContext from '../UsernameContext';
 
-const mapStateToProps = ({ chatUIState: { currentChannelId, fetchMessageStatus }, messages }) => {
+const mapStateToProps = ({ chatUIState: { currentChannelId }, messages, messagesFetchingState }) => {
   return {
     messages: messages[currentChannelId],
     currentChannelId,
-    fetchMessageStatus,
+    messagesFetchingState,
   };
 };
 
@@ -17,7 +17,7 @@ const actionCreators = {
 };
 
 @connect(mapStateToProps, actionCreators)
-export default class Messages extends React.PureComponent {
+export default class Messages extends React.Component {
   static contextType = UsernameContext;
 
   handleFetchMessages = () => {
@@ -77,13 +77,13 @@ export default class Messages extends React.PureComponent {
   }
 
   renderMessages() {
-    const { fetchMessageStatus } = this.props;
-    switch (fetchMessageStatus) {
-      case 'request':
+    const { messagesFetchingState } = this.props;
+    switch (messagesFetchingState) {
+      case 'requested':
         return this.renderRequest();
-      case 'failure':
+      case 'failed':
         return this.renderFailure();
-      case 'success':
+      case 'finished':
         return this.renderSuccess();
       default:
         return 'wrong fetch message status';

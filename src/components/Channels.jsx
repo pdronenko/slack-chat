@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 import Dropdown from 'react-bootstrap/Dropdown';
 import * as actions from '../actions';
 
-const mapStateToProps = ({ channels, chatUIState: { currentChannelId, fetchMessageStatus } }) => {
-  return { channels, currentChannelId, fetchMessageStatus };
+const mapStateToProps = ({ channels, chatUIState: { currentChannelId }, messagesFetchingState }) => {
+  return { channels, currentChannelId, messagesFetchingState };
 };
 
 const actionCreators = {
@@ -50,7 +50,7 @@ export default class Channels extends React.Component {
     const {
       channels: { byId, allIds },
       currentChannelId,
-      fetchMessageStatus,
+      messagesFetchingState,
     } = this.props;
 
     return allIds.map((id) => {
@@ -66,7 +66,7 @@ export default class Channels extends React.Component {
           key={id}
           className={classes}
           data-channel-id={id}
-          onClick={fetchMessageStatus === 'success' ? this.handleChangeChannel : null}
+          onClick={messagesFetchingState === 'finished' ? this.handleChangeChannel : null}
         >
         {name}
         {removable && this.renderEditButtons(isActive, id)}

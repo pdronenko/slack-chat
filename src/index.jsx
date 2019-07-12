@@ -30,13 +30,12 @@ const getUsername = () => {
 
 const initState = {
   channels: {
-    byId: keyBy(gon.channels, 'id'),
     allIds: gon.channels.map(ch => ch.id),
+    byId: keyBy(gon.channels, 'id'),
   },
   messages: groupBy(gon.messages, 'channelId'),
   chatUIState: {
     currentChannelId: gon.currentChannelId,
-    fetchMessageStatus: 'success', // request, success, failure
     channelToEdit: null,
     channelModalState: false,
     removeModalState: false,

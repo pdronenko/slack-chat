@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
 import { reducer as formReducer } from 'redux-form';
 import { handleActions } from 'redux-actions';
-import union from 'lodash/union';
-import update from 'immutability-helper';
+import concat from 'lodash/concat';
+import omitBy from 'lodash/omitBy';
 import * as actions from '../actions';
 
 const chatConnectionState = handleActions({
@@ -14,59 +14,57 @@ const chatConnectionState = handleActions({
   },
 }, 'idle');
 
+const messagesFetchingState = handleActions({
+  [actions.fetchMessagesRequest]() {
+    return 'requested';
+  },
+  [actions.fetchMessagesFailure]() {
+    return 'failed';
+  },
+  [actions.fetchMessagesSuccess]() {
+    return 'finished';
+  },
+}, 'finished');
+
 const channels = handleActions({
   [actions.addChannelSuccess](state, { payload: { newChannel } }) {
-    const { allIds, byId, currentChannelId } = state;
+    const { allIds, byId } = state;
     const { id } = newChannel;
     return {
       allIds: [...allIds, id],
       byId: { ...byId, [id]: newChannel },
-      currentChannelId,
     };
   },
   [actions.renameChannelSuccess](state, { payload: { renamedChannel } }) {
-    const { byId, allIds, currentChannelId } = state;
+    const { byId, allIds } = state;
     const { id } = renamedChannel;
     return {
       allIds,
       byId: { ...byId, [id]: renamedChannel },
-      currentChannelId,
     };
   },
   [actions.removeChannelSuccess](state, { payload: { id } }) {
-    const { allIds, byId, currentChannelId } = state;
-    const newCurrentChannelId = currentChannelId === id ? 1 : currentChannelId;
+    const { allIds, byId } = state;
     return {
       allIds: allIds.filter(chId => chId !== id),
-      byId: update(byId, { $unset: [id] }),
-      currentChannelId: newCurrentChannelId,
+      byId: omitBy(byId, ch => ch.id === id),
     };
   },
 }, {});
 
 const messages = handleActions({
-  [actions.fetchMessagesSuccess](state, { payload: { messages, currentChannelId } }) {
-    return { ...state, [currentChannelId]: messages };
+  [actions.fetchMessagesSuccess](state, { payload: { messagesList, currentChannelId } }) {
+    return { ...state, [currentChannelId]: messagesList };
   },
   [actions.addMessageSuccess](state, { payload: { message } }) {
     const { channelId } = message;
-    const currentMessages = state[channelId] ? state[channelId] : [];
-    return { ...state, [channelId]: [...currentMessages, message] };
+    return { ...state, [channelId]: concat(state[channelId], message) };
   },
 }, {});
 
 const chatUIState = handleActions({
   [actions.changeChannel](state, { payload: { channelId } }) {
     return { ...state, currentChannelId: channelId };
-  },
-  [actions.fetchMessagesRequest](state) {
-    return { ...state, fetchMessageStatus: 'request' };
-  },
-  [actions.fetchMessagesSuccess](state) {
-    return { ...state, fetchMessageStatus: 'success' };
-  },
-  [actions.fetchMessagesFailure](state) {
-    return { ...state, fetchMessageStatus: 'failure' };
   },
   [actions.showChannelModal](state, { payload: { channelId } }) {
     return { ...state, channelModalState: true, channelToEdit: channelId };
@@ -92,6 +90,7 @@ const chatUIState = handleActions({
 
 export default combineReducers({
   chatConnectionState,
+  messagesFetchingState,
   channels,
   messages,
   chatUIState,
