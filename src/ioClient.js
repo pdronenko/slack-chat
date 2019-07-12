@@ -3,28 +3,28 @@ import * as actions from './actions';
 
 export default (store) => {
   const socket = io.connect();
-  socket.on('connect', function () {
+  socket.on('connect', () => {
     console.log('socket connected');
     store.dispatch(actions.connectChat());
   });
-  socket.on('reconnect', function () {
+  socket.on('reconnect', () => {
     console.log('socket reconnected');
     const { chatUIState: { currentChannelId } } = store.getState();
     store.dispatch(actions.fetchMessages(currentChannelId));
   });
-  socket.on('newMessage', function ({ data: { attributes } }) {
+  socket.on('newMessage', ({ data: { attributes } }) => {
     store.dispatch(actions.addMessageSuccess({ message: attributes }));
   });
-  socket.on('newChannel', function ({ data: { attributes } }) {
+  socket.on('newChannel', ({ data: { attributes } }) => {
     store.dispatch(actions.addChannelSuccess({ newChannel: attributes }));
   });
-  socket.on('renameChannel', function ({ data: { attributes } }) {
+  socket.on('renameChannel', ({ data: { attributes } }) => {
     store.dispatch(actions.renameChannelSuccess({ renamedChannel: attributes }));
   });
-  socket.on('removeChannel', function ({ data: { id } }) {
+  socket.on('removeChannel', ({ data: { id } }) => {
     store.dispatch(actions.removeChannelSuccess({ id }));
   });
-  socket.on('disconnect', function () {
+  socket.on('disconnect', () => {
     console.log('socket disconnect');
     store.dispatch(actions.disconnectChat());
   });
