@@ -5,9 +5,7 @@ import * as actions from '../actions';
 import UsernameContext from '../UsernameContext';
 import { normalizeMessage } from '../fieldValidators';
 
-const mapStateToProps = ({ chatUIState: {
-    currentChannelId, fetchMessageStatus,
-  } }) => ({ currentChannelId, fetchMessageStatus });
+const mapStateToProps = ({ chatUIState: { currentChannelId}, messagesFetchingState }) => ({ currentChannelId, messagesFetchingState });
 
 const actionCreators = {
   addMessage: actions.addMessage,
@@ -35,7 +33,7 @@ class MessageForm extends React.Component {
 
   render() {
     const {
-      handleSubmit, submitting, pristine, error, fetchMessageStatus,
+      handleSubmit, submitting, pristine, error, messagesFetchingState,
     } = this.props;
     return (
       <form onSubmit={handleSubmit(this.handleSubmit)}>
@@ -45,7 +43,7 @@ class MessageForm extends React.Component {
               className="btn btn-primary"
               type="submit"
               value="SEND"
-              disabled={pristine || submitting || fetchMessageStatus !== 'success'}>
+              disabled={pristine || submitting || messagesFetchingState !== 'finished'}>
               {submitting && <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>}
               {!submitting && 'SEND'}
             </button>
