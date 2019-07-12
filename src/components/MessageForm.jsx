@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Field, reduxForm, SubmissionError  } from 'redux-form';
 import * as actions from '../actions';
 import UsernameContext from '../UsernameContext';
+import { normalizeMessage } from '../fieldValidators';
 
 const mapStateToProps = ({ chatUIState: {
     currentChannelId, fetchMessageStatus,
@@ -41,7 +42,7 @@ class MessageForm extends React.Component {
         <div className="input-group mb-3">
           <div className="input-group-prepend">
             <button
-              className="btn btn-outline-primary"
+              className="btn btn-primary"
               type="submit"
               value="SEND"
               disabled={pristine || submitting || fetchMessageStatus !== 'success'}>
@@ -51,13 +52,19 @@ class MessageForm extends React.Component {
           </div>
           <Field
             name="text"
-            required
-            component="input"
-            type="text"
-            className="form-control"
+            normalize={normalizeMessage}
+            component={({ input, disabled }) => {
+              return (
+              <input
+                {...input}
+                type="text"
+                className="form-control"
+                placeholder="Message"
+                disabled={disabled}
+                autoFocus
+              />
+            )}}
             disabled={submitting}
-            autoFocus
-            placeholder="Message"
           />
         </div>
         {error && <div className="ml-3">{error}</div>}

@@ -1,4 +1,4 @@
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 
 module.exports = {
   mode: process.env.NODE_ENV || 'development',
@@ -6,7 +6,7 @@ module.exports = {
     `${__dirname}/src/index.jsx`,
   ],
   plugins: [
-    new BundleAnalyzerPlugin()
+    new BundleAnalyzerPlugin(),
   ],
   externals: {
     gon: 'gon',

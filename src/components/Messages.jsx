@@ -13,7 +13,7 @@ const actionCreators = {
 };
 
 @connect(mapStateToProps, actionCreators)
-class Messages extends React.Component {
+export default class Messages extends React.Component {
   static contextType = UsernameContext;
 
   handleFetchMessages = () => {
@@ -108,5 +108,3 @@ class Messages extends React.Component {
     );
   }
 }
-
-export default Messages;

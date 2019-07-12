@@ -4,6 +4,7 @@ import { Field, reduxForm, SubmissionError } from 'redux-form';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import * as actions from '../actions';
+import { normalizeChannelName } from '../fieldValidators';
 
 const mapStateToProps = ({
   chatUIState: {
@@ -79,12 +80,13 @@ class RenameChannelModal extends React.Component {
                 type="text"
                 className="form-control"
                 disabled={submitting}
-                autoFocus
+                normalize={normalizeChannelName}
                 placeholder="New channel name"
+                autoFocus
               />
             </div>
             <button
-              className="btn btn-outline-primary"
+              className="btn btn-primary"
               type="submit"
               value="SEND"
               disabled={pristine || submitting}>
@@ -106,8 +108,8 @@ class RenameChannelModal extends React.Component {
             <h3>Are you sure?</h3>
           </Modal.Header>
           <Modal.Body>
-            <Button variant="outline-secondary" onClick={this.handleCloseModal}>NO</Button>
-            <Button variant="outline-danger float-right" onClick={this.handleRemoveChannel}>YES, REMOVE</Button>
+            <Button variant="secondary" onClick={this.handleCloseModal}>NO</Button>
+            <Button variant="danger float-right" onClick={this.handleRemoveChannel}>YES, REMOVE</Button>
           </Modal.Body>
         </Modal>
       </div>

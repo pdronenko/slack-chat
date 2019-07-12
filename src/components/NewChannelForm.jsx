@@ -4,6 +4,7 @@ import { Field, reduxForm, SubmissionError  } from 'redux-form';
 import values from 'lodash/values';
 import cn from 'classnames';
 import * as actions from '../actions';
+import { normalizeChannelName, validateChannelName } from '../fieldValidators';
 
 const mapStateToProps = ({ channels }) => {
   const channelNames = values(channels.byId).map(ch => ch.name);
@@ -30,9 +31,10 @@ class NewChannelForm extends React.Component {
 
   render() {
     const { handleSubmit, submitting, pristine, error, channelNames } = this.props;
-    const inputClasses = cn({
-      ['form-control']: true,
-      ['is-valid']: !pristine,
+
+    const classes = cn({
+      'form-control': true,
+      'is-invalid': double('x'),
     });
     return (
       <form className="form-inline mt-4" onSubmit={handleSubmit(this.handleSubmit)}>
@@ -41,17 +43,18 @@ class NewChannelForm extends React.Component {
             <Field
               name="newChannelName"
               type="text"
-              className={inputClasses}
+              normalize={normalizeChannelName}
+              validate={double}
+              className={classes}
               component="input"
-              placeholder="New channel"
+              placeholder={"New channel"}
               disabled={submitting}
-              maxLength="8"
             />
             <div className="input-group-append">
-              <input className="btn btn-outline-primary" value="ADD" type="submit" disabled={pristine || submitting} />
-              <div className="valid-feedback">
-                Looks good!
-              </div>
+              <input className="btn btn-primary is-valid" value="ADD" type="submit" disabled={pristine || submitting} />
+            </div>
+            <div className="invalid-feedback">
+              A channel with that name already exists
             </div>
           </div>
         </div>

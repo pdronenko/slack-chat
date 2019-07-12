@@ -14,7 +14,7 @@ const actionCreators = {
 };
 
 @connect(mapStateToProps, actionCreators)
-class Channels extends React.Component {
+export default class Channels extends React.Component {
   handleChangeChannel = (e) => {
     e.preventDefault();
     const channelId = Number(e.target.dataset.channelId);
@@ -77,5 +77,3 @@ class Channels extends React.Component {
     );
   }
 }
-
-export default Channels;
