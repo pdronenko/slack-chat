@@ -33,10 +33,10 @@ const initState = {
     byId: keyBy(gon.channels, 'id'),
     allIds: gon.channels.map(ch => ch.id),
   },
-  messages: [],
+  messages: groupBy(gon.messages, 'channelId'),
   chatUIState: {
     currentChannelId: gon.currentChannelId,
-    fetchMessageStatus: 'idle', // request, success, failure
+    fetchMessageStatus: 'success', // request, success, failure
     channelToEdit: null,
     channelModalState: false,
     removeModalState: false,

@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux';
 import { reducer as formReducer } from 'redux-form';
 import { handleActions } from 'redux-actions';
+import union from 'lodash/union';
 import update from 'immutability-helper';
 import * as actions from '../actions';
 
@@ -44,11 +45,13 @@ const channels = handleActions({
 }, {});
 
 const messages = handleActions({
-  [actions.fetchMessagesSuccess](state, { payload: { messages } }) {
-    return messages.map(msg => msg.attributes);
+  [actions.fetchMessagesSuccess](state, { payload: { messages, currentChannelId } }) {
+    return { ...state, [currentChannelId]: messages };
   },
   [actions.addMessageSuccess](state, { payload: { message } }) {
-    return [...state, message];
+    const { channelId } = message;
+    const currentMessages = state[channelId] ? state[channelId] : [];
+    return { ...state, [channelId]: [...currentMessages, message] };
   },
 }, {});
 

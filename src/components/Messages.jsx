@@ -5,7 +5,11 @@ import * as actions from '../actions';
 import UsernameContext from '../UsernameContext';
 
 const mapStateToProps = ({ chatUIState: { currentChannelId, fetchMessageStatus }, messages }) => {
-  return { messages, currentChannelId, fetchMessageStatus };
+  return {
+    messages: messages[currentChannelId],
+    currentChannelId,
+    fetchMessageStatus,
+  };
 };
 
 const actionCreators = {
@@ -13,7 +17,7 @@ const actionCreators = {
 };
 
 @connect(mapStateToProps, actionCreators)
-export default class Messages extends React.Component {
+export default class Messages extends React.PureComponent {
   static contextType = UsernameContext;
 
   handleFetchMessages = () => {
@@ -53,7 +57,7 @@ export default class Messages extends React.Component {
 
   renderSuccess() {
     const { messages, currentChannelId } = this.props;
-    if (messages.length < 1) {
+    if (!messages || messages.length < 1) {
       return (
         <div className="d-flex justify-content-center text-primary w-100 h-50">
           <h1>No messages</h1>
@@ -83,16 +87,6 @@ export default class Messages extends React.Component {
         return this.renderSuccess();
       default:
         return 'wrong fetch message status';
-    }
-  }
-
-  componentDidMount() {
-    this.handleFetchMessages();
-  }
-  componentDidUpdate(prevProps) {
-    const { currentChannelId } = this.props;
-    if (prevProps.currentChannelId !== currentChannelId) {
-      this.handleFetchMessages();
     }
   }
 

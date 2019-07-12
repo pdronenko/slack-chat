@@ -10,6 +10,7 @@ const mapStateToProps = ({ channels, chatUIState: { currentChannelId, fetchMessa
 
 const actionCreators = {
   changeChannel: actions.changeChannel,
+  fetchMessages: actions.fetchMessages,
   showChannelModal: actions.showChannelModal,
 };
 
@@ -18,12 +19,17 @@ export default class Channels extends React.Component {
   handleChangeChannel = (e) => {
     e.preventDefault();
     const channelId = Number(e.target.dataset.channelId);
-    const { changeChannel, fetchMessages } = this.props;
+    const { changeChannel, fetchMessages, currentChannelId } = this.props;
+    if (currentChannelId === channelId) {
+      return;
+    }
     changeChannel({ channelId });
+    fetchMessages(channelId);
   }
 
   handleShowChannelModal = channelId => (e) => {
     e.stopPropagation();
+    e.preventDefault();
     const { showChannelModal } = this.props;
     showChannelModal({ channelId });
   }
