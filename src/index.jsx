@@ -51,7 +51,7 @@ const store = createStore(
   composeWithDevTools(applyMiddleware(...middleware))
 );
 
-ioConnect(store.dispatch);
+ioConnect(store);
 
 render(
   <Provider store={store}>
