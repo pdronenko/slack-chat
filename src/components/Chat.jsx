@@ -1,5 +1,6 @@
 import React from 'react';
 import UserProfile from './UserProfile';
+import ConnectStatus from './ConnectStatus';
 import Channels from './Channels';
 import Messages from './Messages';
 import MessageForm from './MessageForm';
@@ -10,6 +11,7 @@ const Chat = () => (
   <div className="row justify-content-start">
     <div id="sidebar" className="col-3">
       <UserProfile />
+      <ConnectStatus />
       <Channels />
       <NewChannelForm />
       <ChannelModals />
