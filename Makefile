@@ -13,9 +13,6 @@ build:
 test:
 	npm test
 
-check-types:
-	npx flow
-
 lint:
 	npx eslint . --ext js,jsx
 
