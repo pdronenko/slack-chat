@@ -76,7 +76,7 @@ class MessageForm extends React.Component {
             disabled={submitting}
           />
           <div className="invalid-feedback">
-          {error}
+            {error}
           </div>
         </div>
       </form>

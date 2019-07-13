@@ -95,7 +95,7 @@ const messages = handleActions({
   },
   [actions.addMessageSuccess](state, { payload: { message } }) {
     const { channelId } = message;
-    const newMessages = state[channelId] ? concat(state[channelId], message): [message];
+    const newMessages = state[channelId] ? concat(state[channelId], message) : [message];
     return { ...state, [channelId]: newMessages };
   },
 }, {});

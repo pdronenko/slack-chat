@@ -45,7 +45,7 @@ class NewChannelForm extends React.Component {
           normalize={normalizeChannelName}
           component="input"
           className={inputClasses}
-          placeholder={isTooManyChannels ? "Too many channels" : "New channel"}
+          placeholder={isTooManyChannels ? 'Too many channels' : 'New channel'}
           disabled={submitting || isTooManyChannels}
         />
         <div className="input-group-append">
@@ -57,8 +57,8 @@ class NewChannelForm extends React.Component {
               || isTooManyChannels
               || socketConnectionState === 'disconnected'}
           >
-          {submitting && <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true" />}
-          {!submitting && 'ADD'}
+            {submitting && <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true" />}
+            {!submitting && 'ADD'}
           </button>
         </div>
         <div className="invalid-feedback">

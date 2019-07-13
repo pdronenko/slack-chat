@@ -33,7 +33,9 @@ const actionCreators = {
 @connect(mapStateToProps, actionCreators)
 class RenameChannelModal extends React.Component {
   handleRenameChannel = async ({ newChannelName }) => {
-    const { renameChannel, reset, channelToEdit, closeModal } = this.props;
+    const {
+      renameChannel, reset, channelToEdit, closeModal,
+    } = this.props;
     try {
       await renameChannel(channelToEdit, newChannelName);
     } catch (e) {
@@ -99,8 +101,8 @@ class RenameChannelModal extends React.Component {
                     || submitting
                     || socketConnectionState === 'disconnected'}
                 >
-                {submitting && <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true" />}
-                {!submitting && 'ADD'}
+                  {submitting && <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true" />}
+                  {!submitting && 'ADD'}
                 </button>
               </div>
               <div className="invalid-feedback">
@@ -130,13 +132,13 @@ class RenameChannelModal extends React.Component {
                 || socketConnectionState === 'disconnected'
                 || channelRemovingState === 'requested'}
             >
-            {channelRemovingState === 'requested'
-            ? <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true" />
-            : 'YES, REMOVE'}
+              {channelRemovingState === 'requested'
+                ? <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true" />
+                : 'YES, REMOVE'}
             </Button>
             {channelRemovingState === 'failed'
-            ? <div className="float-right text-danger">Network error, try again</div>
-            : null}
+              ? <div className="float-right text-danger">Network error, try again</div>
+              : null}
           </Modal.Body>
         </Modal>
       </div>
