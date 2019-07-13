@@ -128,8 +128,7 @@ class RenameChannelModal extends React.Component {
             <Button
               variant="danger float-right"
               onClick={this.handleRemoveChannel}
-              disabled={
-                || socketConnectionState === 'disconnected'
+              disabled={socketConnectionState === 'disconnected'
                 || channelRemovingState === 'requested'}
             >
               {channelRemovingState === 'requested'
