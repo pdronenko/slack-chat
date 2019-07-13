@@ -13,6 +13,7 @@ const Chat = () => (
       <UserProfile />
       <ConnectStatus />
       <Channels />
+      <hr />
       <NewChannelForm />
       <ChannelModals />
     </div>

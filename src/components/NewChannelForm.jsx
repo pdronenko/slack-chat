@@ -2,9 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm, SubmissionError } from 'redux-form';
 import values from 'lodash/values';
-import cn from 'classnames';
 import * as actions from '../actions';
-import { normalizeChannelName, validateChannelName } from '../fieldValidators';
+import ChannelNameInput from './ChannelNameInput';
+import { normalizeChannelName, maxChannelsCount } from '../fieldValidators';
 
 const mapStateToProps = ({ channels }) => {
   const channelNames = values(channels.byId).map(ch => ch.name);
@@ -29,34 +29,28 @@ class NewChannelForm extends React.Component {
 
   render() {
     const {
-      handleSubmit, submitting, pristine, error, channelNames,
+      handleSubmit, submitting, pristine, invalid, error, channelNames,
     } = this.props;
-    const classes = cn({
-      'form-control': true,
-      'is-invalid': validateChannelName(channelNames),
-    });
+    const isTooManyChannels = channelNames.length >= maxChannelsCount;
     return (
-      <form className="form-inline mt-4" onSubmit={handleSubmit(this.handleSubmit)}>
-        <div className="form-group w-100">
-          <div className="input-group mb-3">
-            <Field
-              name="newChannelName"
-              type="text"
-              normalize={normalizeChannelName}
-              className={classes}
-              component="input"
-              placeholder="New channel"
-              disabled={submitting}
+      <form className="input-group" onSubmit={handleSubmit(this.handleSubmit)}>
+        <Field
+          name="newChannelName"
+          normalize={normalizeChannelName}
+          component={ChannelNameInput}
+          label={isTooManyChannels ? "Too many channels" : "New channel"}
+          disabled={submitting || isTooManyChannels}
+        >
+          <div className="input-group-append">
+            <input
+              className="btn btn-primary"
+              type="submit"
+              value="ADD"
+              disabled={pristine || submitting || invalid || isTooManyChannels}
             />
-            <div className="input-group-append">
-              <input className="btn btn-primary is-valid" value="ADD" type="submit" disabled={pristine || submitting} />
-            </div>
-            <div className="invalid-feedback">
-              A channel with that name already exists
-            </div>
           </div>
-        </div>
-        {error && <div className="ml-3">{error}</div>}
+        </Field>
+
       </form>
     );
   }

@@ -1,6 +1,6 @@
 const maxMessageLength = 100;
 const maxChannelNameLength = 15;
-const maxChannelsCount = 5;
+export const maxChannelsCount = 5;
 
 export const normalizeMessage = message => (
   message.length > maxMessageLength
