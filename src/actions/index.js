@@ -26,7 +26,7 @@ export const addChannelSuccess = createAction('CHANNEL_ADD_SUCCESS');
 export const addChannelFailure = createAction('CHANNEL_ADD_FAILURE');
 
 export const changeChannel = createAction('CHANNEL_CHANGE');
-export const showChannelModal = createAction('MODAL_CHANNEL_SHOW');
+export const showRenameModal = createAction('MODAL_RENAME_SHOW');
 export const showRemoveModal = createAction('MODAL_REMOVE_SHOW');
 export const closeModal = createAction('MODAL_CLOSE');
 

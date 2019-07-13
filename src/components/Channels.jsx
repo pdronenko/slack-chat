@@ -4,14 +4,25 @@ import { connect } from 'react-redux';
 import Dropdown from 'react-bootstrap/Dropdown';
 import * as actions from '../actions';
 
-const mapStateToProps = ({ channels, chatUIState: { currentChannelId }, messagesFetchingState }) => {
-  return { channels, currentChannelId, messagesFetchingState };
+const mapStateToProps = (state) => {
+  const {
+    channels,
+    chatUIState: { currentChannelId },
+    messagesFetchingState,
+    socketConnectionState,
+  } = state;
+  return {
+    channels,
+    currentChannelId,
+    messagesFetchingState,
+    socketConnectionState,
+  };
 };
 
 const actionCreators = {
   changeChannel: actions.changeChannel,
   fetchMessages: actions.fetchMessages,
-  showChannelModal: actions.showChannelModal,
+  showRenameModal: actions.showRenameModal,
 };
 
 export default @connect(mapStateToProps, actionCreators)
@@ -30,19 +41,20 @@ class Channels extends React.Component {
   handleShowChannelModal = channelId => (e) => {
     e.stopPropagation();
     e.preventDefault();
-    const { showChannelModal } = this.props;
-    showChannelModal({ channelId });
+    const { showRenameModal } = this.props;
+    showRenameModal({ channelId });
   }
 
   renderEditButtons(isActive, channelId) {
+    const { socketConnectionState } = this.props;
     return (
-      <button
+      <input
         type="button"
         className={`btn btn-outline-${isActive ? 'light' : 'primary'} btn-sm float-right`}
         onClick={this.handleShowChannelModal(channelId)}
-      >
-        EDIT
-      </button>
+        disabled={socketConnectionState === 'disconnected'}
+        value="EDIT"
+      />
     );
   }
 

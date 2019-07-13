@@ -5,15 +5,16 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import * as actions from '../actions';
 import { normalizeChannelName } from '../fieldValidators';
+import ChannelNameInput from './ChannelNameInput';
 
 const mapStateToProps = ({
   chatUIState: {
-    channelModalState,
+    ModalChannelEditState,
     removeModalState,
     channelToEdit
   },
 }) => {
-  return { channelModalState, removeModalState, channelToEdit };
+  return { ModalChannelEditState, removeModalState, channelToEdit };
 };
 
 const actionCreators = {
@@ -22,6 +23,16 @@ const actionCreators = {
   closeModal: actions.closeModal,
   showRemoveModal: actions.showRemoveModal,
 };
+
+const popover = () => (
+  <Popover id="popover-basic">
+    <Popover.Title as="h3">Popover right</Popover.Title>
+    <Popover.Content>
+      And here's some <strong>amazing</strong> content. It's very engaging.
+      right?
+    </Popover.Content>
+  </Popover>
+);
 
 @connect(mapStateToProps, actionCreators)
 class RenameChannelModal extends React.Component {
@@ -51,7 +62,6 @@ class RenameChannelModal extends React.Component {
 
   handleShowRemoveModal = () => {
     const { showRemoveModal } = this.props;
-    this.handleCloseModal();
     showRemoveModal();
   }
 
@@ -61,49 +71,45 @@ class RenameChannelModal extends React.Component {
 
   render() {
     const {
-      channelModalState,
+      ModalChannelEditState,
       removeModalState,
       submitting,
       handleSubmit,
       pristine,
+      invalid,
     } = this.props;
     return (
       <div id="modals">
-        <Modal show={channelModalState} onHide={this.handleCloseModal} size="sm" centered>
+        <Modal show={ModalChannelEditState === 'renameModal'} onHide={this.handleCloseModal} size="sm" centered>
           <Modal.Body>
-          <form className="form-row" onSubmit={handleSubmit(this.handleRenameChannel)}>
-            <div className="col">
+            <form className="input-group" onSubmit={handleSubmit(this.handleRenameChannel)}>
               <Field
                 name="newChannelName"
-                required
-                component="input"
-                type="text"
-                className="form-control"
-                disabled={submitting}
                 normalize={normalizeChannelName}
-                placeholder="New channel name"
-                autoFocus
-              />
-            </div>
-            <button
-              className="btn btn-primary"
-              type="submit"
-              value="SEND"
-              disabled={pristine || submitting}>
-              {submitting && <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>}
-              {!submitting && 'RENAME'}
-            </button>
-          </form>
-          <hr />
-          <Button
-            variant="outline-danger btn-sm btn-block mt-2"
-            onClick={this.handleShowRemoveModal}
-          >
-            REMOVE CHANNEL
-          </Button>
+                component={ChannelNameInput}
+                label="New channel name"
+                disabled={submitting}
+              >
+                <div className="input-group-append">
+                  <input
+                    className="btn btn-primary"
+                    type="submit"
+                    value="RENAME"
+                    disabled={pristine || submitting || invalid}
+                  />
+                </div>
+              </Field>
+            </form>
+            <hr />
+            <Button
+              variant="outline-danger btn-sm btn-block mt-2"
+              onClick={this.handleShowRemoveModal}
+            >
+              REMOVE CHANNEL
+            </Button>
           </Modal.Body>
         </Modal>
-        <Modal show={removeModalState} onHide={this.handleCloseModal} size="sm" centered>
+        <Modal show={ModalChannelEditState === 'removeModal'} onHide={this.handleCloseModal} size="sm" centered>
           <Modal.Header>
             <h3>Are you sure?</h3>
           </Modal.Header>

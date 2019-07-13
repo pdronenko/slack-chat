@@ -58,7 +58,8 @@ const messages = handleActions({
   },
   [actions.addMessageSuccess](state, { payload: { message } }) {
     const { channelId } = message;
-    return { ...state, [channelId]: concat(state[channelId], message) };
+    const newMessages = state[channelId] ? concat(state[channelId], message): [message];
+    return { ...state, [channelId]: newMessages };
   },
 }, {});
 
@@ -66,23 +67,23 @@ const chatUIState = handleActions({
   [actions.changeChannel](state, { payload: { channelId } }) {
     return { ...state, currentChannelId: channelId };
   },
-  [actions.showChannelModal](state, { payload: { channelId } }) {
-    return { ...state, channelModalState: true, channelToEdit: channelId };
+  [actions.showRenameModal](state, { payload: { channelId } }) {
+    return { ...state, ModalChannelEditState: 'renameModal', channelToEdit: channelId };
   },
   [actions.showRemoveModal](state) {
-    return { ...state, removeModalState: true };
+    return { ...state, ModalChannelEditState: 'removeModal' };
   },
   [actions.closeModal](state) {
-    return { ...state, channelModalState: false, removeModalState: false };
+    return { ...state, ModalChannelEditState: 'hide', channelToEdit: null };
   },
   [actions.renameChannelSuccess](state) {
-    return { ...state, channelModalState: false };
+    return { ...state, ModalChannelEditState: 'hide' };
   },
   [actions.removeChannelSuccess](state, { payload: { id } }) {
     const { currentChannelId } = state;
     return {
       ...state,
-      removeModalState: false,
+      ModalChannelEditState: 'hide',
       currentChannelId: id === currentChannelId ? 1 : currentChannelId,
     };
   },

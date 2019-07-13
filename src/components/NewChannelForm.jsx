@@ -50,7 +50,6 @@ class NewChannelForm extends React.Component {
             />
           </div>
         </Field>
-
       </form>
     );
   }

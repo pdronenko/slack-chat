@@ -15,7 +15,7 @@ import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly'; 
 import reducers from './reducers';
 import Chat from './components/Chat';
 import UsernameContext from './UsernameContext';
-import ioConnect from './ioClient';
+import socketConnect from './socketClient';
 
 if (process.env.NODE_ENV !== 'production') {
   localStorage.debug = 'chat:*';
@@ -37,8 +37,7 @@ const initState = {
   chatUIState: {
     currentChannelId: gon.currentChannelId,
     channelToEdit: null,
-    channelModalState: false,
-    removeModalState: false,
+    ModalChannelEditState: 'hide',
   },
 };
 
@@ -50,7 +49,7 @@ const store = createStore(
   composeWithDevTools(applyMiddleware(...middleware)),
 );
 
-ioConnect(store);
+socketConnect(store);
 
 render(
   <Provider store={store}>
