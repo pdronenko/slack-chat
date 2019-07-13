@@ -5,7 +5,7 @@ export default (store) => {
   const socket = io.connect();
   socket.on('connect', () => {
     console.log('socket connected');
-    store.dispatch(actions.connectChat());
+    store.dispatch(actions.connectSocket());
   });
   socket.on('reconnect', () => {
     console.log('socket reconnected');
@@ -26,6 +26,6 @@ export default (store) => {
   });
   socket.on('disconnect', () => {
     console.log('socket disconnect');
-    store.dispatch(actions.disconnectChat());
+    store.dispatch(actions.disconnectSocket());
   });
 };

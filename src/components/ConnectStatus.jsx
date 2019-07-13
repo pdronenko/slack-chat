@@ -3,10 +3,10 @@ import { connect } from 'react-redux';
 import Alert from 'react-bootstrap/Alert';
 import * as actions from '../actions';
 
-const mapStateToProps = ({ chatConnectionState, chatUIState }) => {
+const mapStateToProps = ({ socketConnectionState, chatUIState }) => {
   const { currentChannelId } = chatUIState;
   const props = {
-    chatConnectionState,
+    socketConnectionState,
     currentChannelId,
   }
   return props;
@@ -25,9 +25,9 @@ class ConnectStatus extends React.Component {
   }
 
   render() {
-    const { chatConnectionState } = this.props;
+    const { socketConnectionState } = this.props;
     return (
-      <Alert show={chatConnectionState === 'disconnected'} variant="danger">
+      <Alert show={socketConnectionState === 'disconnected'} variant="danger">
         Disconnected :-(
         <br />
         You can try to{' '}

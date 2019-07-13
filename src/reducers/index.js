@@ -5,11 +5,11 @@ import concat from 'lodash/concat';
 import omitBy from 'lodash/omitBy';
 import * as actions from '../actions';
 
-const chatConnectionState = handleActions({
-  [actions.disconnectChat]() {
+const socketConnectionState = handleActions({
+  [actions.disconnectSocket]() {
     return 'disconnected';
   },
-  [actions.connectChat]() {
+  [actions.connectSocket]() {
     return 'connected';
   },
 }, 'idle');
@@ -89,7 +89,7 @@ const chatUIState = handleActions({
 }, {});
 
 export default combineReducers({
-  chatConnectionState,
+  socketConnectionState,
   messagesFetchingState,
   channels,
   messages,
