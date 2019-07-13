@@ -1,21 +1,14 @@
 import React from 'react';
 import cn from 'classnames';
 import { connect } from 'react-redux';
-import Dropdown from 'react-bootstrap/Dropdown';
 import * as actions from '../actions';
 
 const mapStateToProps = (state) => {
   const {
-    channels,
-    chatUIState: { currentChannelId },
-    messagesFetchingState,
-    socketConnectionState,
+    channels, chatUIState: { currentChannelId }, messagesFetchingState, socketConnectionState,
   } = state;
   return {
-    channels,
-    currentChannelId,
-    messagesFetchingState,
-    socketConnectionState,
+    channels, currentChannelId, messagesFetchingState, socketConnectionState,
   };
 };
 
@@ -30,12 +23,15 @@ class Channels extends React.Component {
   handleChangeChannel = (e) => {
     e.preventDefault();
     const channelId = Number(e.target.dataset.channelId);
-    const { changeChannel, fetchMessages, currentChannelId } = this.props;
-    if (currentChannelId === channelId) {
-      return;
+    const {
+      changeChannel, fetchMessages, currentChannelId, socketConnectionState,
+    } = this.props;
+    if (currentChannelId !== channelId) {
+      changeChannel({ channelId });
     }
-    changeChannel({ channelId });
-    fetchMessages(channelId);
+    if (socketConnectionState === 'connected') {
+      fetchMessages({ channelId });
+    }
   }
 
   handleShowChannelModal = channelId => (e) => {
@@ -60,17 +56,16 @@ class Channels extends React.Component {
 
   renderChannels() {
     const {
-      channels: { byId, allIds },
-      currentChannelId,
-      messagesFetchingState,
+      channels: { byId, allIds }, currentChannelId, messagesFetchingState,
     } = this.props;
 
     return allIds.map((id) => {
       const isActive = id === currentChannelId;
       const { name, removable } = byId[id];
-      const classes = cn ({
-        ['list-group-item-action list-group-item']: true,
+      const classes = cn({
+        'list-group-item-action list-group-item': true,
         active: isActive,
+        disabled: messagesFetchingState === 'requested',
       });
       return (
         <a
@@ -78,13 +73,13 @@ class Channels extends React.Component {
           key={id}
           className={classes}
           data-channel-id={id}
-          onClick={messagesFetchingState === 'finished' ? this.handleChangeChannel : null}
+          onClick={this.handleChangeChannel}
         >
-        {name}
-        {removable && this.renderEditButtons(isActive, id)}
+          {name}
+          {removable && this.renderEditButtons(isActive, id)}
         </a>
       );
-    })
+    });
   }
 
   render() {

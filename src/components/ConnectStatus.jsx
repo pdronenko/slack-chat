@@ -3,12 +3,12 @@ import { connect } from 'react-redux';
 import Alert from 'react-bootstrap/Alert';
 import * as actions from '../actions';
 
-const mapStateToProps = ({ socketConnectionState, chatUIState }) => {
-  const { currentChannelId } = chatUIState;
+const mapStateToProps = (state) => {
+  const { socketConnectionState, chatUIState: { currentChannelId } } = state;
   const props = {
     socketConnectionState,
     currentChannelId,
-  }
+  };
   return props;
 };
 
@@ -30,10 +30,11 @@ class ConnectStatus extends React.Component {
       <Alert show={socketConnectionState === 'disconnected'} variant="danger">
         Disconnected :-(
         <br />
-        You can try to{' '}
+        {'You can try to '}
         <Alert.Link href="#" onClick={this.handleFetchMessages}>
           <u>reconnect</u>
-        </Alert.Link>.
+        </Alert.Link>
+        .
       </Alert>
     );
   }

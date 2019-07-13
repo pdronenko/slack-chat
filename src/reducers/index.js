@@ -24,7 +24,44 @@ const messagesFetchingState = handleActions({
   [actions.fetchMessagesSuccess]() {
     return 'finished';
   },
-}, 'finished');
+}, 'none');
+
+const channelRenamingState = handleActions({
+  [actions.renameChannelRequest]() {
+    return 'requested';
+  },
+  [actions.renameChannelFailure]() {
+    return 'failed';
+  },
+  [actions.renameChannelSuccess]() {
+    return 'finished';
+  },
+}, 'none');
+
+const channelRemovingState = handleActions({
+  [actions.removeChannelRequest]() {
+    return 'requested';
+  },
+  [actions.removeChannelFailure]() {
+    return 'failed';
+  },
+  [actions.removeChannelSuccess]() {
+    return 'finished';
+  },
+}, 'none');
+
+const channelAddingState = handleActions({
+  [actions.addChannelRequest]() {
+    return 'requested';
+  },
+  [actions.addChannelFailure]() {
+    return 'failed';
+  },
+  [actions.addChannelSuccess]() {
+    return 'finished';
+  },
+}, 'none');
+
 
 const channels = handleActions({
   [actions.addChannelSuccess](state, { payload: { newChannel } }) {
@@ -77,13 +114,13 @@ const chatUIState = handleActions({
     return { ...state, ModalChannelEditState: 'hide', channelToEdit: null };
   },
   [actions.renameChannelSuccess](state) {
-    return { ...state, ModalChannelEditState: 'hide' };
+    return { ...state, channelToEdit: null };
   },
   [actions.removeChannelSuccess](state, { payload: { id } }) {
     const { currentChannelId } = state;
     return {
       ...state,
-      ModalChannelEditState: 'hide',
+      channelToEdit: null,
       currentChannelId: id === currentChannelId ? 1 : currentChannelId,
     };
   },
@@ -92,6 +129,9 @@ const chatUIState = handleActions({
 export default combineReducers({
   socketConnectionState,
   messagesFetchingState,
+  channelAddingState,
+  channelRenamingState,
+  channelRemovingState,
   channels,
   messages,
   chatUIState,

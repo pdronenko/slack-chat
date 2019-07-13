@@ -5,19 +5,19 @@ import Channels from './Channels';
 import Messages from './Messages';
 import MessageForm from './MessageForm';
 import NewChannelForm from './NewChannelForm';
-import ChannelModals from './ChannelModals';
+import ChannelEditModals from './ChannelEditModals';
 
 const Chat = () => (
-  <div className="row justify-content-start">
-    <div id="sidebar" className="col-3">
+  <div className="row">
+    <div id="sidebar" className="col-md-4 col-lg-3">
       <UserProfile />
       <ConnectStatus />
       <Channels />
       <hr />
       <NewChannelForm />
-      <ChannelModals />
+      <ChannelEditModals />
     </div>
-    <div id="body" className="col-8">
+    <div id="body" className="col">
       <Messages />
       <MessageForm />
     </div>

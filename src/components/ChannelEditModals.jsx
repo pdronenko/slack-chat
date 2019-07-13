@@ -3,18 +3,24 @@ import { connect } from 'react-redux';
 import { Field, reduxForm, SubmissionError } from 'redux-form';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
+import cn from 'classnames';
 import * as actions from '../actions';
 import { normalizeChannelName } from '../fieldValidators';
-import ChannelNameInput from './ChannelNameInput';
 
-const mapStateToProps = ({
-  chatUIState: {
+const mapStateToProps = (state) => {
+  const {
+    chatUIState: { ModalChannelEditState, channelToEdit },
+    channelRemovingState,
+    channelRenamingState,
+    socketConnectionState,
+  } = state;
+  return {
     ModalChannelEditState,
-    removeModalState,
-    channelToEdit
-  },
-}) => {
-  return { ModalChannelEditState, removeModalState, channelToEdit };
+    channelToEdit,
+    socketConnectionState,
+    channelRemovingState,
+    channelRenamingState,
+  };
 };
 
 const actionCreators = {
@@ -24,35 +30,27 @@ const actionCreators = {
   showRemoveModal: actions.showRemoveModal,
 };
 
-const popover = () => (
-  <Popover id="popover-basic">
-    <Popover.Title as="h3">Popover right</Popover.Title>
-    <Popover.Content>
-      And here's some <strong>amazing</strong> content. It's very engaging.
-      right?
-    </Popover.Content>
-  </Popover>
-);
-
 @connect(mapStateToProps, actionCreators)
 class RenameChannelModal extends React.Component {
   handleRenameChannel = async ({ newChannelName }) => {
-    const { renameChannel, reset, channelToEdit } = this.props;
+    const { renameChannel, reset, channelToEdit, closeModal } = this.props;
     try {
       await renameChannel(channelToEdit, newChannelName);
     } catch (e) {
       throw new SubmissionError({ _error: e.message });
     }
     reset();
+    closeModal();
   }
 
   handleRemoveChannel = async () => {
-    const { removeChannel, channelToEdit } = this.props;
+    const { removeChannel, channelToEdit, closeModal } = this.props;
     try {
       await removeChannel(channelToEdit);
     } catch (e) {
       throw new Error(e);
     }
+    closeModal();
   }
 
   handleCloseModal = () => {
@@ -65,19 +63,20 @@ class RenameChannelModal extends React.Component {
     showRemoveModal();
   }
 
-  renderEditModal() {
-
-  }
-
   render() {
     const {
       ModalChannelEditState,
-      removeModalState,
       submitting,
       handleSubmit,
       pristine,
-      invalid,
+      error,
+      socketConnectionState,
+      channelRemovingState,
     } = this.props;
+    const inputClasses = cn({
+      'form-control': true,
+      'is-invalid': error,
+    });
     return (
       <div id="modals">
         <Modal show={ModalChannelEditState === 'renameModal'} onHide={this.handleCloseModal} size="sm" centered>
@@ -85,25 +84,34 @@ class RenameChannelModal extends React.Component {
             <form className="input-group" onSubmit={handleSubmit(this.handleRenameChannel)}>
               <Field
                 name="newChannelName"
+                type="text"
                 normalize={normalizeChannelName}
-                component={ChannelNameInput}
-                label="New channel name"
+                component="input"
+                className={inputClasses}
+                placeholder="New channel"
                 disabled={submitting}
-              >
-                <div className="input-group-append">
-                  <input
-                    className="btn btn-primary"
-                    type="submit"
-                    value="RENAME"
-                    disabled={pristine || submitting || invalid}
-                  />
-                </div>
-              </Field>
+              />
+              <div className="input-group-append">
+                <button
+                  className="btn btn-primary"
+                  type="submit"
+                  disabled={pristine
+                    || submitting
+                    || socketConnectionState === 'disconnected'}
+                >
+                {submitting && <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true" />}
+                {!submitting && 'ADD'}
+                </button>
+              </div>
+              <div className="invalid-feedback">
+                {error}
+              </div>
             </form>
             <hr />
             <Button
               variant="outline-danger btn-sm btn-block mt-2"
               onClick={this.handleShowRemoveModal}
+              disabled={socketConnectionState === 'disconnected'}
             >
               REMOVE CHANNEL
             </Button>
@@ -115,7 +123,20 @@ class RenameChannelModal extends React.Component {
           </Modal.Header>
           <Modal.Body>
             <Button variant="secondary" onClick={this.handleCloseModal}>NO</Button>
-            <Button variant="danger float-right" onClick={this.handleRemoveChannel}>YES, REMOVE</Button>
+            <Button
+              variant="danger float-right"
+              onClick={this.handleRemoveChannel}
+              disabled={submitting
+                || socketConnectionState === 'disconnected'
+                || channelRemovingState === 'requested'}
+            >
+            {channelRemovingState === 'requested'
+            ? <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true" />
+            : 'YES, REMOVE'}
+            </Button>
+            {channelRemovingState === 'failed'
+            ? <div className="float-right text-danger">Network error, try again</div>
+            : null}
           </Modal.Body>
         </Modal>
       </div>

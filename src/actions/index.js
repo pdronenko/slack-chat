@@ -61,13 +61,13 @@ export const addChannel = name => async (dispatch) => {
   }
 };
 
-export const fetchMessages = currentChannelId => async (dispatch) => {
+export const fetchMessages = ({ channelId }) => async (dispatch) => {
   dispatch(fetchMessagesRequest());
   try {
-    const { data } = await axios.get(routes.messagesPath(currentChannelId));
+    const { data } = await axios.get(routes.messagesPath(channelId));
     dispatch(fetchMessagesSuccess({
       messagesList: data.map(msg => msg.attributes),
-      currentChannelId,
+      channelId,
     }));
   } catch (e) {
     dispatch(fetchMessagesFailure());
