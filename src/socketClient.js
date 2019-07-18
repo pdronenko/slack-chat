@@ -10,7 +10,8 @@ export default (store) => {
   socket.on('reconnect', () => {
     console.log('socket reconnected');
     const { chatUIState: { currentChannelId } } = store.getState();
-    store.dispatch(actions.fetchMessages(currentChannelId));
+    store.dispatch(actions.fetchChannels());
+    store.dispatch(actions.fetchMessages({ channelId: currentChannelId }));
   });
   socket.on('newMessage', ({ data: { attributes } }) => {
     store.dispatch(actions.addMessageSuccess({ message: attributes }));

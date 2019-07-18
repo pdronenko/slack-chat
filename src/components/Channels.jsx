@@ -1,7 +1,7 @@
 import React from 'react';
 import cn from 'classnames';
 import { connect } from 'react-redux';
-import * as actions from '../actions';
+import * as actionCreators from '../actions';
 
 const mapStateToProps = (state) => {
   const {
@@ -10,12 +10,6 @@ const mapStateToProps = (state) => {
   return {
     channels, currentChannelId, messagesFetchingState, socketConnectionState,
   };
-};
-
-const actionCreators = {
-  changeChannel: actions.changeChannel,
-  fetchMessages: actions.fetchMessages,
-  showRenameModal: actions.showRenameModal,
 };
 
 export default @connect(mapStateToProps, actionCreators)

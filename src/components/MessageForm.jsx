@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm, SubmissionError } from 'redux-form';
 import cn from 'classnames';
-import * as actions from '../actions';
+import * as actionCreators from '../actions';
 import UsernameContext from '../UsernameContext';
 import { normalizeMessage } from '../fieldValidators';
 
@@ -13,10 +13,7 @@ const mapStateToProps = (state) => {
   return { currentChannelId, socketConnectionState };
 };
 
-const actionCreators = {
-  addMessage: actions.addMessage,
-};
-
+export default @reduxForm({ form: 'newMessage' })
 @connect(mapStateToProps, actionCreators)
 class MessageForm extends React.Component {
   static contextType = UsernameContext;
@@ -83,7 +80,3 @@ class MessageForm extends React.Component {
     );
   }
 }
-
-export default reduxForm({
-  form: 'newMessage',
-})(MessageForm);

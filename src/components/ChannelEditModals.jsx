@@ -4,32 +4,27 @@ import { Field, reduxForm, SubmissionError } from 'redux-form';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import cn from 'classnames';
-import * as actions from '../actions';
+import * as actionCreators from '../actions';
 import { normalizeChannelName } from '../fieldValidators';
 
 const mapStateToProps = (state) => {
   const {
     chatUIState: { ModalChannelEditState, channelToEdit },
     channelRemovingState,
-    channelRenamingState,
     socketConnectionState,
+    channels,
   } = state;
   return {
     ModalChannelEditState,
     channelToEdit,
+    channels: channels.byId,
     socketConnectionState,
     channelRemovingState,
-    channelRenamingState,
   };
 };
 
-const actionCreators = {
-  renameChannel: actions.renameChannel,
-  removeChannel: actions.removeChannel,
-  closeModal: actions.closeModal,
-  showRemoveModal: actions.showRemoveModal,
-};
 
+export default @reduxForm({ form: 'renameChannel' })
 @connect(mapStateToProps, actionCreators)
 class RenameChannelModal extends React.Component {
   handleRenameChannel = async ({ newChannelName }) => {
@@ -72,6 +67,8 @@ class RenameChannelModal extends React.Component {
       handleSubmit,
       pristine,
       error,
+      channels,
+      channelToEdit,
       socketConnectionState,
       channelRemovingState,
     } = this.props;
@@ -79,6 +76,8 @@ class RenameChannelModal extends React.Component {
       'form-control': true,
       'is-invalid': error,
     });
+    const getPrevChannelName = () => channels[channelToEdit].name;
+
     return (
       <div id="modals">
         <Modal show={ModalChannelEditState === 'renameModal'} onHide={this.handleCloseModal} size="sm" centered>
@@ -90,7 +89,7 @@ class RenameChannelModal extends React.Component {
                 normalize={normalizeChannelName}
                 component="input"
                 className={inputClasses}
-                placeholder="New channel"
+                placeholder={channelToEdit ? getPrevChannelName() : 'New channel name'}
                 disabled={submitting}
               />
               <div className="input-group-append">
@@ -102,7 +101,7 @@ class RenameChannelModal extends React.Component {
                     || socketConnectionState === 'disconnected'}
                 >
                   {submitting && <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true" />}
-                  {!submitting && 'ADD'}
+                  {!submitting && 'RENAME'}
                 </button>
               </div>
               <div className="invalid-feedback">
@@ -113,7 +112,8 @@ class RenameChannelModal extends React.Component {
             <Button
               variant="outline-danger btn-sm btn-block mt-2"
               onClick={this.handleShowRemoveModal}
-              disabled={socketConnectionState === 'disconnected'}
+              disabled={socketConnectionState === 'disconnected'
+                || submitting}
             >
               REMOVE CHANNEL
             </Button>
@@ -144,7 +144,3 @@ class RenameChannelModal extends React.Component {
     );
   }
 }
-
-export default reduxForm({
-  form: 'renameChannel',
-})(RenameChannelModal);

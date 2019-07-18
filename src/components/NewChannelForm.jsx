@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Field, reduxForm, SubmissionError } from 'redux-form';
 import values from 'lodash/values';
 import cn from 'classnames';
-import * as actions from '../actions';
+import * as actionCreators from '../actions';
 import { normalizeChannelName, maxChannelsCount } from '../fieldValidators';
 
 const mapStateToProps = (state) => {
@@ -12,10 +12,7 @@ const mapStateToProps = (state) => {
   return { channelNames, socketConnectionState };
 };
 
-const actionCreators = {
-  addChannel: actions.addChannel,
-};
-
+export default @reduxForm({ form: 'newChannel' })
 @connect(mapStateToProps, actionCreators)
 class NewChannelForm extends React.Component {
   handleSubmit = async ({ newChannelName }) => {
@@ -68,7 +65,3 @@ class NewChannelForm extends React.Component {
     );
   }
 }
-
-export default reduxForm({
-  form: 'newChannel',
-})(NewChannelForm);

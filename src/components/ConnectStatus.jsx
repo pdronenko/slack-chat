@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Alert from 'react-bootstrap/Alert';
-import * as actions from '../actions';
+import * as actionCreators from '../actions';
 
 const mapStateToProps = (state) => {
   const { socketConnectionState, chatUIState: { currentChannelId } } = state;
@@ -10,10 +10,6 @@ const mapStateToProps = (state) => {
     currentChannelId,
   };
   return props;
-};
-
-const actionCreators = {
-  fetchMessages: actions.fetchMessages,
 };
 
 export default @connect(mapStateToProps, actionCreators)
