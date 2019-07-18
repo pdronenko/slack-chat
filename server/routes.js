@@ -21,7 +21,12 @@ export default (router, io) => {
   apiRouter
     .get('/channels', (ctx) => {
       ctx.body = state.channels;
-      ctx.status = 301;
+      const resources = state.channels.map(ch => ({
+        type: 'channels',
+        id: ch.id,
+        attributes: ch,
+      }));
+      ctx.body = resources;
     })
     .post('/channels', (ctx) => {
       const { data: { attributes: { name } } } = ctx.request.body;
