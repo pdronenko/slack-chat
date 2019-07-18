@@ -3,9 +3,10 @@ import { connect } from 'react-redux';
 import { Field, reduxForm, SubmissionError } from 'redux-form';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
+import values from 'lodash/values';
 import cn from 'classnames';
 import * as actionCreators from '../actions';
-import { normalizeChannelName } from '../fieldValidators';
+import { normalizeChannelName, validateChannelName } from '../fieldValidators';
 
 const mapStateToProps = (state) => {
   const {
@@ -18,6 +19,7 @@ const mapStateToProps = (state) => {
     ModalChannelEditState,
     channelToEdit,
     channels: channels.byId,
+    channelNames: values(channels.byId).map(ch => ch.name),
     socketConnectionState,
     channelRemovingState,
   };
@@ -27,6 +29,11 @@ const mapStateToProps = (state) => {
 export default @reduxForm({ form: 'renameChannel' })
 @connect(mapStateToProps, actionCreators)
 class RenameChannelModal extends React.Component {
+  validate = (value) => {
+    const { channelNames } = this.props;
+    return validateChannelName(channelNames, value);
+  }
+
   handleRenameChannel = async ({ newChannelName }) => {
     const {
       renameChannel, reset, channelToEdit, closeModal,
@@ -67,6 +74,7 @@ class RenameChannelModal extends React.Component {
       handleSubmit,
       pristine,
       error,
+      invalid,
       channels,
       channelToEdit,
       socketConnectionState,
@@ -74,7 +82,7 @@ class RenameChannelModal extends React.Component {
     } = this.props;
     const inputClasses = cn({
       'form-control': true,
-      'is-invalid': error,
+      'is-invalid': error || invalid,
     });
     const getPrevChannelName = () => channels[channelToEdit].name;
 
@@ -87,6 +95,7 @@ class RenameChannelModal extends React.Component {
                 name="newChannelName"
                 type="text"
                 normalize={normalizeChannelName}
+                validate={this.validate}
                 component="input"
                 className={inputClasses}
                 placeholder={channelToEdit ? getPrevChannelName() : 'New channel name'}
@@ -98,14 +107,15 @@ class RenameChannelModal extends React.Component {
                   type="submit"
                   disabled={pristine
                     || submitting
-                    || socketConnectionState === 'disconnected'}
+                    || socketConnectionState === 'disconnected'
+                    || invalid}
                 >
                   {submitting && <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true" />}
                   {!submitting && 'RENAME'}
                 </button>
               </div>
               <div className="invalid-feedback">
-                {error}
+                {error || (invalid && 'This channel name already exists')}
               </div>
             </form>
             <hr />

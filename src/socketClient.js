@@ -26,7 +26,7 @@ export default (store) => {
     store.dispatch(actions.removeChannelSuccess({ id }));
   });
   socket.on('disconnect', () => {
-    console.log('socket disconnect');
+    console.log('socket disconnected');
     store.dispatch(actions.disconnectSocket());
   });
 };

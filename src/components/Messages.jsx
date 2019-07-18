@@ -11,6 +11,14 @@ const mapStateToProps = (state) => {
   return props;
 };
 
+const LoadingSpinner = () => (
+  <div className="d-flex justify-content-center text-primary w-100 h-50">
+    <div className="spinner-border" role="status">
+      <span className="sr-only">Loading...</span>
+    </div>
+  </div>
+);
+
 export default @connect(mapStateToProps)
 class Messages extends React.Component {
   static contextType = UsernameContext;
@@ -40,21 +48,13 @@ class Messages extends React.Component {
 
   render() {
     const { messagesFetchingState } = this.props;
+    const isFetching = messagesFetchingState === 'requested';
     return (
       <div
         className="d-flex border p-1 flex-column-reverse align-items-start overflow-auto"
         style={{ height: '70vh' }}
       >
-        {messagesFetchingState === 'requested'
-          ? (
-            <div className="d-flex justify-content-center text-primary w-100 h-50">
-              <div className="spinner-border" role="status">
-                <span className="sr-only">Loading...</span>
-              </div>
-            </div>
-          )
-          : this.renderMessages()
-        }
+        {isFetching ? <LoadingSpinner /> : this.renderMessages()}
       </div>
     );
   }

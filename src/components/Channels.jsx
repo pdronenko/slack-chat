@@ -5,10 +5,18 @@ import * as actionCreators from '../actions';
 
 const mapStateToProps = (state) => {
   const {
-    channels, chatUIState: { currentChannelId }, messagesFetchingState, socketConnectionState,
+    channels,
+    chatUIState: { currentChannelId },
+    messagesFetchingState,
+    socketConnectionState,
+    channelsFetchingState,
   } = state;
   return {
-    channels, currentChannelId, messagesFetchingState, socketConnectionState,
+    channels,
+    currentChannelId,
+    messagesFetchingState,
+    socketConnectionState,
+    channelsFetchingState,
   };
 };
 
@@ -77,9 +85,19 @@ class Channels extends React.Component {
   }
 
   render() {
+    const { channelsFetchingState } = this.props;
+    const isFetching = channelsFetchingState === 'requested';
+    const spinner = (
+      <div className="d-flex justify-content-center">
+        <div className="spinner-border text-primary" role="status">
+          <span className="sr-only">Loading...</span>
+        </div>
+      </div>
+    );
+
     return (
       <div id="channels" className="list-group">
-        {this.renderChannels()}
+        {isFetching ? spinner : this.renderChannels()}
       </div>
     );
   }

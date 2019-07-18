@@ -4,7 +4,7 @@ import { Field, reduxForm, SubmissionError } from 'redux-form';
 import values from 'lodash/values';
 import cn from 'classnames';
 import * as actionCreators from '../actions';
-import { normalizeChannelName, maxChannelsCount } from '../fieldValidators';
+import { normalizeChannelName, maxChannelsCount, validateChannelName } from '../fieldValidators';
 
 const mapStateToProps = (state) => {
   const { socketConnectionState } = state;
@@ -15,6 +15,11 @@ const mapStateToProps = (state) => {
 export default @reduxForm({ form: 'newChannel' })
 @connect(mapStateToProps, actionCreators)
 class NewChannelForm extends React.Component {
+  validate = (value) => {
+    const { channelNames } = this.props;
+    return validateChannelName(channelNames, value);
+  }
+
   handleSubmit = async ({ newChannelName }) => {
     const { addChannel, reset } = this.props;
     try {
@@ -27,12 +32,12 @@ class NewChannelForm extends React.Component {
 
   render() {
     const {
-      handleSubmit, submitting, pristine, error, channelNames, socketConnectionState,
+      handleSubmit, submitting, pristine, error, invalid, channelNames, socketConnectionState,
     } = this.props;
     const isTooManyChannels = channelNames.length >= maxChannelsCount;
     const inputClasses = cn({
       'form-control': true,
-      'is-invalid': error,
+      'is-invalid': error || invalid,
     });
     return (
       <form className="input-group" onSubmit={handleSubmit(this.handleSubmit)}>
@@ -40,6 +45,7 @@ class NewChannelForm extends React.Component {
           name="newChannelName"
           type="text"
           normalize={normalizeChannelName}
+          validate={this.validate}
           component="input"
           className={inputClasses}
           placeholder={isTooManyChannels ? 'Too many channels' : 'New channel'}
@@ -52,14 +58,15 @@ class NewChannelForm extends React.Component {
             disabled={pristine
               || submitting
               || isTooManyChannels
-              || socketConnectionState === 'disconnected'}
+              || socketConnectionState === 'disconnected'
+              || invalid}
           >
             {submitting && <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true" />}
             {!submitting && 'ADD'}
           </button>
         </div>
         <div className="invalid-feedback">
-          {error}
+          {error || (invalid && 'This channel name already exists')}
         </div>
       </form>
     );
