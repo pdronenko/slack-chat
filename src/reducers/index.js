@@ -115,6 +115,7 @@ const chatUIState = handleActions({
     return {
       ...state,
       channelToEdit: null,
+      ModalChannelEditState: 'hide',
       currentChannelId: id === currentChannelId ? defaultChannelId : currentChannelId,
     };
   },

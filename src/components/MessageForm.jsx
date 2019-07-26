@@ -37,7 +37,7 @@ class MessageForm extends React.Component {
       handleSubmit, submitting, pristine, error, socketConnectionState,
     } = this.props;
     const inputClasses = cn({
-      'form-control': true,
+      'form-control rounded-right': true,
       'is-invalid': error,
     });
 
@@ -46,7 +46,7 @@ class MessageForm extends React.Component {
         <div className="input-group mb-3">
           <div className="input-group-prepend">
             <button
-              className="btn btn-primary"
+              className="btn btn-secondary"
               type="submit"
               value="SEND"
               disabled={pristine

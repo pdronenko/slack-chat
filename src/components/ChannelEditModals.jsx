@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { Field, reduxForm, SubmissionError } from 'redux-form';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
@@ -24,7 +25,6 @@ const mapStateToProps = (state) => {
     channelRemovingState,
   };
 };
-
 
 export default @reduxForm({ form: 'renameChannel' })
 @connect(mapStateToProps, actionCreators)
@@ -54,7 +54,7 @@ class RenameChannelModal extends React.Component {
     } catch (e) {
       throw new Error(e);
     }
-    closeModal();
+//    closeModal();
   }
 
   handleCloseModal = () => {
@@ -85,7 +85,6 @@ class RenameChannelModal extends React.Component {
       'is-invalid': error || invalid,
     });
     const getPrevChannelName = () => channels[channelToEdit].name;
-
     return (
       <div id="modals">
         <Modal show={ModalChannelEditState === 'renameModal'} onHide={this.handleCloseModal} size="sm" centered>
@@ -103,7 +102,7 @@ class RenameChannelModal extends React.Component {
               />
               <div className="input-group-append">
                 <button
-                  className="btn btn-primary"
+                  className="btn btn-secondary rounded-right"
                   type="submit"
                   disabled={pristine
                     || submitting

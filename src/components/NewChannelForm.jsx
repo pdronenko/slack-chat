@@ -53,7 +53,7 @@ class NewChannelForm extends React.Component {
         />
         <div className="input-group-append">
           <button
-            className="btn btn-primary"
+            className="btn btn-secondary rounded-right"
             type="submit"
             disabled={pristine
               || submitting

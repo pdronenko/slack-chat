@@ -12,7 +12,7 @@ const mapStateToProps = (state) => {
 };
 
 const LoadingSpinner = () => (
-  <div className="d-flex justify-content-center text-primary w-100 h-50">
+  <div className="d-flex justify-content-center text-secondary w-100 h-50">
     <div className="spinner-border" role="status">
       <span className="sr-only">Loading...</span>
     </div>
@@ -27,7 +27,7 @@ class Messages extends React.Component {
     const { messages } = this.props;
     if (!messages || messages.length < 1) {
       return (
-        <div className="d-flex justify-content-center text-primary w-100 h-50">
+        <div className="d-flex justify-content-center text-secondary w-100 h-50">
           <h1>No messages</h1>
         </div>
       );
@@ -36,7 +36,7 @@ class Messages extends React.Component {
       <div className="mb-auto m-1">
         {messages.map(msg => (
           <div key={msg.id}>
-            <strong className={this.context === msg.username ? 'text-primary' : null}>
+            <strong className={this.context === msg.username ? 'text-info' : 'text-dark'}>
               {msg.username}
             </strong>
             {`: ${msg.text}`}
@@ -51,7 +51,7 @@ class Messages extends React.Component {
     const isFetching = messagesFetchingState === 'requested';
     return (
       <div
-        className="d-flex border p-1 flex-column-reverse align-items-start overflow-auto"
+        className="d-flex border rounded p-1 mt-3 flex-column-reverse align-items-start overflow-auto"
         style={{ height: '70vh' }}
       >
         {isFetching ? <LoadingSpinner /> : this.renderMessages()}

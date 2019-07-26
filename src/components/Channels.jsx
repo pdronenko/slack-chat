@@ -48,7 +48,7 @@ class Channels extends React.Component {
     return (
       <input
         type="button"
-        className={`btn btn-outline-${isActive ? 'light' : 'primary'} btn-sm float-right`}
+        className={`btn btn-outline-${isActive ? 'light' : 'secondary'} btn-sm float-right`}
         onClick={this.handleShowChannelModal(channelId)}
         disabled={socketConnectionState === 'disconnected'}
         value="EDIT"
@@ -64,10 +64,12 @@ class Channels extends React.Component {
     return allIds.map((id) => {
       const isActive = id === currentChannelId;
       const { name, removable } = byId[id];
+      const isRequesting = messagesFetchingState === 'requested';
       const classes = cn({
-        'list-group-item-action list-group-item': true,
         active: isActive,
-        disabled: messagesFetchingState === 'requested',
+        'list-group-item-action list-group-item': true,
+        'btn-secondary': !isRequesting,
+        'list-group-item-light disabled': isRequesting,
       });
       return (
         <a
@@ -89,14 +91,14 @@ class Channels extends React.Component {
     const isFetching = channelsFetchingState === 'requested';
     const spinner = (
       <div className="d-flex justify-content-center">
-        <div className="spinner-border text-primary" role="status">
+        <div className="spinner-border text-secondary" role="status">
           <span className="sr-only">Loading...</span>
         </div>
       </div>
     );
 
     return (
-      <div id="channels" className="list-group">
+      <div id="channels" className="list-group mt-2">
         {isFetching ? spinner : this.renderChannels()}
       </div>
     );

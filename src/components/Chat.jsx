@@ -9,7 +9,7 @@ import ChannelEditModals from './ChannelEditModals';
 
 const Chat = () => (
   <div className="row">
-    <div id="sidebar" className="col-md-4 col-lg-3">
+    <div id="sidebar" className="col-md-4 col-lg-3 bg-light pt-3 rounded">
       <UserProfile />
       <ConnectStatus />
       <Channels />
@@ -17,7 +17,7 @@ const Chat = () => (
       <NewChannelForm />
       <ChannelEditModals />
     </div>
-    <div id="body" className="col">
+    <div id="body" className="col bg-light rounded">
       <Messages />
       <MessageForm />
     </div>

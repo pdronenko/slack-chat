@@ -1,12 +1,13 @@
 import React, { useContext } from 'react';
 import UsernameContext from '../UsernameContext';
+import { withTranslation } from 'react-i18next';
 
-const UserProfile = () => (
+const UserProfile = ({ t }) => (
   <div>
-    Welcome,
+    {t('welcome_react')},
     <br />
-    <span className="text-primary"><strong>{useContext(UsernameContext)}</strong></span>
+    <span className="text-info"><strong>{useContext(UsernameContext)}</strong></span>
   </div>
 );
 
-export default UserProfile;
+export default withTranslation()(UserProfile);
