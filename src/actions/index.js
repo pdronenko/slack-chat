@@ -48,7 +48,6 @@ export const fetchChannels = () => async (dispatch) => {
     dispatch(fetchChannelsSuccess({ channelsList: data.map(ch => ch.attributes) }));
   } catch (e) {
     dispatch(fetchChannelsFailure());
-    console.log(e);
     throw e;
   }
 };
@@ -63,7 +62,6 @@ export const fetchMessages = ({ channelId }) => async (dispatch) => {
     }));
   } catch (e) {
     dispatch(fetchMessagesFailure());
-    console.log(e);
     throw e;
   }
 };
@@ -74,7 +72,6 @@ export const removeChannel = channelId => async (dispatch) => {
     await axios.delete(routes.channelPath(channelId));
   } catch (e) {
     dispatch(removeChannelFailure());
-    console.log(e);
     throw e;
   }
 };
