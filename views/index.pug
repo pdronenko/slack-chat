@@ -5,11 +5,5 @@ html(lang="en")
     script.
       var gon = !{JSON.stringify(gon)};
   body.bg-secondary
-    nav.navbar.navbar-expand-lg.navbar-light.bg-light
-      a.navbar-brand(href="/") Slack Chat
-      button.navbar-toggler(data-toggle="collapse" data-target="#navbarSupportedContent")
-        span.navbar-toggler-icon
-    .container
-      #chat.m-3
-      // block content
+    #chat
     script(src='/assets/main.js')

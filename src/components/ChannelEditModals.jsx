@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { useTranslation } from 'react-i18next';
 import { Field, reduxForm, SubmissionError } from 'redux-form';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
@@ -48,13 +47,12 @@ class RenameChannelModal extends React.Component {
   }
 
   handleRemoveChannel = async () => {
-    const { removeChannel, channelToEdit, closeModal } = this.props;
+    const { removeChannel, channelToEdit } = this.props;
     try {
       await removeChannel(channelToEdit);
     } catch (e) {
       throw new Error(e);
     }
-//    closeModal();
   }
 
   handleCloseModal = () => {

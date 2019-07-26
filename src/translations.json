@@ -1,0 +1,30 @@
+{
+  "en": {
+    "translation": {
+      "welcome_user": "Welcome",
+      "new_channel": "New channel",
+      "message": "Message",
+      "no_messages": "No Messages",
+      "remove_channel": "REMOVE CHANNEL",
+      "are_you_sure": "Are you sure?",
+      "yes_remove": "YES, REMOVE",
+      "no_remove": "NO",
+      "disconnected": "Disconnected :-(\nYou can try to",
+      "reconnect": "reconnect"
+    }
+  },
+  "ru": {
+    "translation": {
+      "welcome_user": "Привет",
+      "new_channel": "Новый канал",
+      "message": "Сообщение",
+      "no_messages": "Нет Сообщений",
+      "remove_channel": "УДАЛИТЬ КАНАЛ",
+      "are_you_sure": "Вы уверены?",
+      "yes_remove": "ДА, УДАЛИТЬ",
+      "no_remove": "НЕТ",
+      "disconnected": "Нет подключения :-(\nПопробуйте",
+      "reconnect": "переподключиться"
+    }
+  }
+}

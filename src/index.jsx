@@ -16,6 +16,7 @@ import reducers from './reducers';
 import Chat from './components/Chat';
 import UsernameContext from './UsernameContext';
 import socketConnect from './socketClient';
+import './i18n';
 
 if (process.env.NODE_ENV !== 'production') {
   localStorage.debug = 'chat:*';
