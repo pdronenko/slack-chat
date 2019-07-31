@@ -5,23 +5,26 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import values from 'lodash/values';
 import cn from 'classnames';
+import { I18n } from 'react-redux-i18n';
 import * as actionCreators from '../actions';
 import { normalizeChannelName, validateChannelName } from '../fieldValidators';
 
 const mapStateToProps = (state) => {
   const {
     chatUIState: { ModalChannelEditState, channelToEdit },
+    i18n: { locale },
     channelRemovingState,
     socketConnectionState,
     channels,
   } = state;
   return {
-    ModalChannelEditState,
-    channelToEdit,
     channels: channels.byId,
     channelNames: values(channels.byId).map(ch => ch.name),
+    ModalChannelEditState,
+    channelToEdit,
     socketConnectionState,
     channelRemovingState,
+    locale,
   };
 };
 
@@ -95,8 +98,9 @@ class RenameChannelModal extends React.Component {
                 validate={this.validate}
                 component="input"
                 className={inputClasses}
-                placeholder={channelToEdit ? getPrevChannelName() : 'New channel name'}
+                placeholder={channelToEdit ? getPrevChannelName() : I18n.t('application.new_channel')}
                 disabled={submitting}
+                value="text"
               />
               <div className="input-group-append">
                 <button
@@ -108,11 +112,11 @@ class RenameChannelModal extends React.Component {
                     || invalid}
                 >
                   {submitting && <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true" />}
-                  {!submitting && 'RENAME'}
+                  {!submitting && I18n.t('application.rename')}
                 </button>
               </div>
               <div className="invalid-feedback">
-                {error || (invalid && 'This channel name already exists')}
+                {error || (invalid && I18n.t('application.channel_exists'))}
               </div>
             </form>
             <hr />
@@ -122,16 +126,16 @@ class RenameChannelModal extends React.Component {
               disabled={socketConnectionState === 'disconnected'
                 || submitting}
             >
-              REMOVE CHANNEL
+              {I18n.t('application.remove_channel')}
             </Button>
           </Modal.Body>
         </Modal>
         <Modal show={ModalChannelEditState === 'removeModal'} onHide={this.handleCloseModal} size="sm" centered>
           <Modal.Header>
-            <h3>Are you sure?</h3>
+            <h3>{I18n.t('application.are_you_sure')}</h3>
           </Modal.Header>
           <Modal.Body>
-            <Button variant="secondary" onClick={this.handleCloseModal}>NO</Button>
+            <Button variant="secondary" onClick={this.handleCloseModal}>{I18n.t('application.no_remove')}</Button>
             <Button
               variant="danger float-right"
               onClick={this.handleRemoveChannel}
@@ -140,7 +144,7 @@ class RenameChannelModal extends React.Component {
             >
               {channelRemovingState === 'requested'
                 ? <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true" />
-                : 'YES, REMOVE'}
+                : I18n.t('application.yes_remove')}
             </Button>
             {channelRemovingState === 'failed'
               ? <div className="float-right text-danger">Network error, try again</div>

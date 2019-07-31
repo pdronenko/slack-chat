@@ -3,27 +3,35 @@
     "application": {
       "welcome_user": "Welcome",
       "new_channel": "New channel",
+      "many_channels": "Too many channels",
+      "channel_exists": "This channel already exists",
       "message": "Message",
       "no_messages": "No Messages",
+      "rename": "RENAME",
       "remove_channel": "REMOVE CHANNEL",
       "are_you_sure": "Are you sure?",
       "yes_remove": "YES, REMOVE",
       "no_remove": "NO",
-      "disconnected": "Disconnected :-(\nYou can try to",
+      "disconnected": "Disconnected :-(",
+      "try_to": "You can try to ",
       "reconnect": "reconnect"
     }
   },
   "ru": {
     "application": {
-      "welcome_user": "Привет",
+      "welcome_user": "Здравствуйте",
       "new_channel": "Новый канал",
+      "many_channels": "Слишком много каналов",
+      "channel_exists": "Такой канал уже существует",
       "message": "Сообщение",
       "no_messages": "Нет Сообщений",
+      "rename": "ИЗМЕНИТЬ",
       "remove_channel": "УДАЛИТЬ КАНАЛ",
       "are_you_sure": "Вы уверены?",
       "yes_remove": "ДА, УДАЛИТЬ",
       "no_remove": "НЕТ",
-      "disconnected": "Нет подключения :-(\nПопробуйте",
+      "disconnected": "Нет подключения :-(",
+      "try_to": "Вы можете попробовать ",
       "reconnect": "переподключиться"
     }
   }

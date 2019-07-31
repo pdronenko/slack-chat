@@ -4,15 +4,16 @@ import { Field, reduxForm, SubmissionError } from 'redux-form';
 import cn from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
+import { I18n } from 'react-redux-i18n';
 import * as actionCreators from '../actions';
 import UsernameContext from '../UsernameContext';
 import { normalizeMessage } from '../fieldValidators';
 
 const mapStateToProps = (state) => {
   const {
-    chatUIState: { currentChannelId }, socketConnectionState,
+    chatUIState: { currentChannelId }, i18n: { locale }, socketConnectionState,
   } = state;
-  return { currentChannelId, socketConnectionState };
+  return { currentChannelId, socketConnectionState, locale };
 };
 
 export default @reduxForm({ form: 'newMessage' })
@@ -54,7 +55,7 @@ class MessageForm extends React.Component {
                 {...input}
                 type="text"
                 className={inputClasses}
-                placeholder="Message"
+                placeholder={I18n.t('application.message')}
                 disabled={disabled}
                 autoFocus
               />
@@ -65,7 +66,6 @@ class MessageForm extends React.Component {
             <button
               className="btn btn-secondary rounded-right"
               type="submit"
-              value="SEND"
               disabled={pristine
                 || submitting
                 || socketConnectionState === 'disconnected'}

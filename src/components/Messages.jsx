@@ -1,12 +1,16 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { I18n } from 'react-redux-i18n';
 import UsernameContext from '../UsernameContext';
 
 const mapStateToProps = (state) => {
-  const { chatUIState, messages, messagesFetchingState } = state;
+  const {
+    chatUIState, messages, messagesFetchingState, i18n: { locale },
+  } = state;
   const props = {
     messages: messages[chatUIState.currentChannelId],
     messagesFetchingState,
+    locale,
   };
   return props;
 };
@@ -28,7 +32,7 @@ class Messages extends React.Component {
     if (!messages || messages.length < 1) {
       return (
         <div className="d-flex justify-content-center text-secondary w-100 h-50">
-          <h1>No messages</h1>
+          <h1>{I18n.t('application.no_messages')}</h1>
         </div>
       );
     }

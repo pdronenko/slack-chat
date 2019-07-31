@@ -5,6 +5,7 @@ import values from 'lodash/values';
 import cn from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { I18n } from 'react-redux-i18n';
 import * as actionCreators from '../actions';
 import { normalizeChannelName, maxChannelsCount, validateChannelName } from '../fieldValidators';
 
@@ -50,8 +51,9 @@ class NewChannelForm extends React.Component {
           validate={this.validate}
           component="input"
           className={inputClasses}
-          placeholder={isTooManyChannels ? 'Too many channels' : 'New channel'}
+          placeholder={isTooManyChannels ? I18n.t('application.many_channels') : I18n.t('application.new_channel')}
           disabled={submitting || isTooManyChannels}
+          value="text"
         />
         <div className="input-group-append">
           <button
@@ -68,7 +70,7 @@ class NewChannelForm extends React.Component {
           </button>
         </div>
         <div className="invalid-feedback">
-          {error || (invalid && 'This channel name already exists')}
+          {error || (invalid && I18n.t('application.channel_exists'))}
         </div>
       </form>
     );

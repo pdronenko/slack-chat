@@ -1,15 +1,20 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Alert from 'react-bootstrap/Alert';
+import { I18n } from 'react-redux-i18n';
 import * as actionCreators from '../actions';
 
 const mapStateToProps = (state) => {
-  const { socketConnectionState, chatUIState: { currentChannelId } } = state;
-  const props = {
+  const {
+    socketConnectionState,
+    chatUIState: { currentChannelId },
+    i18n: { locale },
+  } = state;
+  return {
     socketConnectionState,
     currentChannelId,
+    locale,
   };
-  return props;
 };
 
 export default @connect(mapStateToProps, actionCreators)
@@ -24,11 +29,11 @@ class ConnectStatus extends React.Component {
     const { socketConnectionState } = this.props;
     return (
       <Alert show={socketConnectionState === 'disconnected'} variant="danger">
-        Disconnected :-(
+        {I18n.t('application.disconnected')}
         <br />
-        {'You can try to '}
+        {I18n.t('application.try_to')}
         <Alert.Link href="#" onClick={this.handleFetchMessages}>
-          <u>reconnect</u>
+          <u>{I18n.t('application.reconnect')}</u>
         </Alert.Link>
         .
       </Alert>
