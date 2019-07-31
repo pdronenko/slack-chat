@@ -4,6 +4,7 @@ import { handleActions } from 'redux-actions';
 import concat from 'lodash/concat';
 import omitBy from 'lodash/omitBy';
 import keyBy from 'lodash/keyBy';
+import { i18nReducer } from 'react-redux-i18n';
 import * as actions from '../actions';
 
 const socketConnectionState = handleActions({
@@ -130,4 +131,5 @@ export default combineReducers({
   messages,
   chatUIState,
   form: formReducer,
+  i18n: i18nReducer,
 });

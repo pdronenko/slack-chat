@@ -12,11 +12,12 @@ import thunk from 'redux-thunk';
 import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly'; // eslint-disable-line
+import { loadTranslations, setLocale, syncTranslationWithStore } from 'react-redux-i18n';
 import reducers from './reducers';
 import Chat from './components/Chat';
 import UsernameContext from './UsernameContext';
 import socketConnect from './socketClient';
-import './i18n';
+import translationsObject from './translations.json';
 
 if (process.env.NODE_ENV !== 'production') {
   localStorage.debug = 'chat:*';
@@ -51,6 +52,9 @@ const store = createStore(
 );
 
 socketConnect(store);
+syncTranslationWithStore(store);
+store.dispatch(loadTranslations(translationsObject));
+store.dispatch(setLocale('en'));
 
 render(
   <Provider store={store}>

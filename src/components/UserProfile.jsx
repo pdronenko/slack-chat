@@ -1,13 +1,14 @@
 import React, { useContext } from 'react';
-import { withTranslation } from 'react-i18next';
+import { Translate } from 'react-redux-i18n';
 import UsernameContext from '../UsernameContext';
 
-const UserProfile = ({ t }) => (
+const UserProfile = () => (
   <div>
-    {`${t('welcome_user')},`}
+    <Translate value="application.welcome_user" />
+    ,
     <br />
     <span className="text-info"><strong>{useContext(UsernameContext)}</strong></span>
   </div>
 );
 
-export default withTranslation()(UserProfile);
+export default UserProfile;

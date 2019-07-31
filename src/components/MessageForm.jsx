@@ -2,6 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm, SubmissionError } from 'redux-form';
 import cn from 'classnames';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 import * as actionCreators from '../actions';
 import UsernameContext from '../UsernameContext';
 import { normalizeMessage } from '../fieldValidators';
@@ -37,26 +39,13 @@ class MessageForm extends React.Component {
       handleSubmit, submitting, pristine, error, socketConnectionState,
     } = this.props;
     const inputClasses = cn({
-      'form-control rounded-right': true,
+      'form-control': true,
       'is-invalid': error,
     });
 
     return (
       <form onSubmit={handleSubmit(this.handleSubmitMessage)}>
         <div className="input-group mb-3">
-          <div className="input-group-prepend">
-            <button
-              className="btn btn-secondary"
-              type="submit"
-              value="SEND"
-              disabled={pristine
-                || submitting
-                || socketConnectionState === 'disconnected'}
-            >
-              {submitting && <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true" />}
-              {!submitting && 'SEND'}
-            </button>
-          </div>
           <Field
             name="text"
             normalize={normalizeMessage}
@@ -72,6 +61,19 @@ class MessageForm extends React.Component {
             )}
             disabled={submitting}
           />
+          <div className="input-group-append">
+            <button
+              className="btn btn-secondary rounded-right"
+              type="submit"
+              value="SEND"
+              disabled={pristine
+                || submitting
+                || socketConnectionState === 'disconnected'}
+            >
+              {submitting && <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true" />}
+              {!submitting && <FontAwesomeIcon icon={faPaperPlane} size="lg" />}
+            </button>
+          </div>
           <div className="invalid-feedback">
             {error}
           </div>

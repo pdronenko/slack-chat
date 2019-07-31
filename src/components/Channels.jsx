@@ -1,6 +1,8 @@
 import React from 'react';
 import cn from 'classnames';
 import { connect } from 'react-redux';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPen } from '@fortawesome/free-solid-svg-icons';
 import * as actionCreators from '../actions';
 
 const mapStateToProps = (state) => {
@@ -46,13 +48,14 @@ class Channels extends React.Component {
   renderEditButtons(isActive, channelId) {
     const { socketConnectionState } = this.props;
     return (
-      <input
+      <button
         type="button"
         className={`btn btn-outline-${isActive ? 'light' : 'secondary'} btn-sm float-right`}
         onClick={this.handleShowChannelModal(channelId)}
         disabled={socketConnectionState === 'disconnected'}
-        value="EDIT"
-      />
+      >
+        <FontAwesomeIcon icon={faPen} size="lg" />
+      </button>
     );
   }
 

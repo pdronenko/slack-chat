@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { Field, reduxForm, SubmissionError } from 'redux-form';
 import values from 'lodash/values';
 import cn from 'classnames';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import * as actionCreators from '../actions';
 import { normalizeChannelName, maxChannelsCount, validateChannelName } from '../fieldValidators';
 
@@ -62,7 +64,7 @@ class NewChannelForm extends React.Component {
               || invalid}
           >
             {submitting && <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true" />}
-            {!submitting && 'ADD'}
+            {!submitting && <FontAwesomeIcon icon={faPlus} size="lg" />}
           </button>
         </div>
         <div className="invalid-feedback">

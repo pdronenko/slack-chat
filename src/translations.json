@@ -1,6 +1,6 @@
 {
   "en": {
-    "translation": {
+    "application": {
       "welcome_user": "Welcome",
       "new_channel": "New channel",
       "message": "Message",
@@ -14,7 +14,7 @@
     }
   },
   "ru": {
-    "translation": {
+    "application": {
       "welcome_user": "Привет",
       "new_channel": "Новый канал",
       "message": "Сообщение",
