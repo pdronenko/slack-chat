@@ -98,7 +98,7 @@ class RenameChannelModal extends React.Component {
                 validate={this.validate}
                 component="input"
                 className={inputClasses}
-                placeholder={channelToEdit ? getPrevChannelName() : I18n.t('application.new_channel')}
+                placeholder={channelToEdit ? getPrevChannelName() : I18n.t('application.newChannel')}
                 disabled={submitting}
                 value="text"
               />
@@ -116,7 +116,7 @@ class RenameChannelModal extends React.Component {
                 </button>
               </div>
               <div className="invalid-feedback">
-                {error || (invalid && I18n.t('application.channel_exists'))}
+                {error || (invalid && I18n.t('application.channelExists'))}
               </div>
             </form>
             <hr />
@@ -126,16 +126,16 @@ class RenameChannelModal extends React.Component {
               disabled={socketConnectionState === 'disconnected'
                 || submitting}
             >
-              {I18n.t('application.remove_channel')}
+              {I18n.t('application.removeChannel')}
             </Button>
           </Modal.Body>
         </Modal>
         <Modal show={ModalChannelEditState === 'removeModal'} onHide={this.handleCloseModal} size="sm" centered>
           <Modal.Header>
-            <h3>{I18n.t('application.are_you_sure')}</h3>
+            <h3>{I18n.t('application.areYouSure')}</h3>
           </Modal.Header>
           <Modal.Body>
-            <Button variant="secondary" onClick={this.handleCloseModal}>{I18n.t('application.no_remove')}</Button>
+            <Button variant="secondary" onClick={this.handleCloseModal}>{I18n.t('application.noRemove')}</Button>
             <Button
               variant="danger float-right"
               onClick={this.handleRemoveChannel}
@@ -144,7 +144,7 @@ class RenameChannelModal extends React.Component {
             >
               {channelRemovingState === 'requested'
                 ? <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true" />
-                : I18n.t('application.yes_remove')}
+                : I18n.t('application.yesRemove')}
             </Button>
             {channelRemovingState === 'failed'
               ? <div className="float-right text-danger">Network error, try again</div>

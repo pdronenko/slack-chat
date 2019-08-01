@@ -32,7 +32,7 @@ class Messages extends React.Component {
     if (!messages || messages.length < 1) {
       return (
         <div className="d-flex justify-content-center text-secondary w-100 h-50">
-          <h1>{I18n.t('application.no_messages')}</h1>
+          <h1>{I18n.t('application.noMessages')}</h1>
         </div>
       );
     }

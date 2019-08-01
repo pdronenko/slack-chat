@@ -4,7 +4,7 @@ import UsernameContext from '../UsernameContext';
 
 const UserProfile = () => (
   <div>
-    <Translate value="application.welcome_user" />
+    <Translate value="application.welcomeUser" />
     ,
     <br />
     <span className="text-info"><strong>{useContext(UsernameContext)}</strong></span>

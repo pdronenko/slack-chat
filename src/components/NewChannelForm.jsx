@@ -51,7 +51,7 @@ class NewChannelForm extends React.Component {
           validate={this.validate}
           component="input"
           className={inputClasses}
-          placeholder={isTooManyChannels ? I18n.t('application.many_channels') : I18n.t('application.new_channel')}
+          placeholder={isTooManyChannels ? I18n.t('application.manyChannels') : I18n.t('application.newChannel')}
           disabled={submitting || isTooManyChannels}
           value="text"
         />
@@ -70,7 +70,7 @@ class NewChannelForm extends React.Component {
           </button>
         </div>
         <div className="invalid-feedback">
-          {error || (invalid && I18n.t('application.channel_exists'))}
+          {error || (invalid && I18n.t('application.channelExists'))}
         </div>
       </form>
     );

@@ -31,7 +31,7 @@ class ConnectStatus extends React.Component {
       <Alert show={socketConnectionState === 'disconnected'} variant="danger">
         {I18n.t('application.disconnected')}
         <br />
-        {I18n.t('application.try_to')}
+        {I18n.t('application.tryTo')}
         <Alert.Link href="#" onClick={this.handleFetchMessages}>
           <u>{I18n.t('application.reconnect')}</u>
         </Alert.Link>
